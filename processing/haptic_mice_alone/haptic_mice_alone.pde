@@ -7,11 +7,13 @@ import processing.serial.*;
   String osName = System.getProperty("os.name").toLowerCase(); 
 
 
+
 public void setup(){
   size(620, 400, JAVA2D);
   createGUI();
   customGUI();
   // Place your setup code here
+  
   
 }
 
@@ -19,7 +21,7 @@ public void draw(){
   background(230);
   lbl_time.setText(hour()+":"+minute()+":"+second());
   lbl_date.setText(day()+"-"+month()+"-"+year());
-  
+ 
 }
 
 // Use this method to add additional statements

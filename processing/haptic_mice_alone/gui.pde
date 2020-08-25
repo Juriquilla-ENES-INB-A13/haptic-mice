@@ -53,7 +53,7 @@ public void createGUI(){
   G4P.setDisplayFont("Arial", G4P.PLAIN, 14);
   G4P.setInputFont("Arial", G4P.PLAIN, 14);
   G4P.setSliderFont("Arial", G4P.PLAIN, 12);
-  surface.setTitle("Sketch Window");
+  surface.setTitle("Haptic Mice");
   lblSerialPort = new GLabel(this, 10, 50, 110, 20);
   lblSerialPort.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   lblSerialPort.setText("Serial port:");
