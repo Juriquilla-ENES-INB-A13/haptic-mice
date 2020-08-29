@@ -21,7 +21,11 @@ public void fill_click(GButton source, GEvent event) { //_CODE_:btn_fill:689985:
 } //_CODE_:btn_fill:689985:
 
 public void startstop_click(GButton source, GEvent event) { //_CODE_:btn_startstop:979319:
-  println("Start stop!");
+  if(fld_name.getText() != ""){
+    appendTextToFile(fld_name.getText()+".csv","HOLA");
+  } else {
+    println("ERROR: Experiment name needed!");
+  }
 } //_CODE_:btn_startstop:979319:
 
 public void open_click(GButton source, GEvent event) { //_CODE_:btn_open:975310:
