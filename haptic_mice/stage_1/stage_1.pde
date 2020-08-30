@@ -8,7 +8,7 @@ public void setup(){
   size(350, 320, JAVA2D);
   createGUI();
   customGUI();
-  // Place your setup code here
+
   
 }
 
@@ -17,8 +17,6 @@ public void draw(){
   
 }
 
-// Use this method to add additional statements
-// to customise the GUI controls
 public void customGUI(){
   fld_freq.setNumericType(G4P.INTEGER);
   fld_repeats.setNumericType(G4P.INTEGER);
@@ -41,9 +39,6 @@ void appendTextToFile(String filename, String text){
   }
 }
 
-/**
- * Creates a new file including all subfolders
- */
 void createFile(File f){
   File parentDir = f.getParentFile();
   try{
