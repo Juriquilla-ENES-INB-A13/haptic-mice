@@ -29,6 +29,7 @@ public void startstop_click(GButton source, GEvent event) { //_CODE_:btn_startst
 } //_CODE_:btn_startstop:979319:
 
 public void open_click(GButton source, GEvent event) { //_CODE_:btn_open:975310:
+  println("Opening folder:"+dataPath(""));
   launch(dataPath(""));
 } //_CODE_:btn_open:975310:
 

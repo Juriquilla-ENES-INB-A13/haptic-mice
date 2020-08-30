@@ -1,20 +1,16 @@
-
 import g4p_controls.*;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 
-
 public void setup(){
-  size(350, 320, JAVA2D);
+  size(330, 290, JAVA2D);
   createGUI();
   customGUI();
-
   
 }
 
 public void draw(){
   background(230);
-  
 }
 
 public void customGUI(){
