@@ -30,7 +30,11 @@ public void startstop_click(GButton source, GEvent event) { //_CODE_:btn_startst
 
 public void open_click(GButton source, GEvent event) { //_CODE_:btn_open:975310:
   println("Opening folder:"+dataPath(""));
-  launch(dataPath(""));
+  if(System.getProperty("os.name").toLowerCase().contains("windows")){
+    launch("explorer.exe"+" "+dataPath(""));
+  } else {
+    launch(dataPath(""));
+  }
 } //_CODE_:btn_open:975310:
 
 
