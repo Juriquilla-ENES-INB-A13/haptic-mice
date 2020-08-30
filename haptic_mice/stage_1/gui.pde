@@ -15,16 +15,12 @@
  */
 
 public void fill_click(GButton source, GEvent event) { //_CODE_:btn_fill:689985:
-  println("filling!");
-  delay(2000);
-  println("Ready!");
+  fill(pump);
 } //_CODE_:btn_fill:689985:
 
 public void startstop_click(GButton source, GEvent event) { //_CODE_:btn_startstop:979319:
-  if(fld_name.getText() != ""){
-    appendTextToFile(fld_name.getText()+".csv","HOLA");
-  } else {
-    println("ERROR: Experiment name needed!");
+  if(checkFields()){
+    doExperiment();
   }
 } //_CODE_:btn_startstop:979319:
 
