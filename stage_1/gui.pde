@@ -15,21 +15,19 @@
  */
 
 public void fill_click(GButton source, GEvent event) { //_CODE_:btn_fill:689985:
-  println("filling!");
-  delay(2000);
-  println("Ready!");
+  fill(pump);
 } //_CODE_:btn_fill:689985:
 
 public void startstop_click(GButton source, GEvent event) { //_CODE_:btn_startstop:979319:
-  if(fld_name.getText() != ""){
-    appendTextToFile(fld_name.getText()+".csv","HOLA");
-  } else {
-    println("ERROR: Experiment name needed!");
-  }
+  btn_startstop.setText("Running!");
+  btn_startstop.setLocalColorScheme(GCScheme.RED_SCHEME);
+  doExperiment(fld_name.getText(),fld_repeats.getValueI());
+  btn_startstop.setText("Start");
+  btn_startstop.setLocalColorScheme(GCScheme.GREEN_SCHEME);
 } //_CODE_:btn_startstop:979319:
 
 public void open_click(GButton source, GEvent event) { //_CODE_:btn_open:975310:
-  launch(dataPath(""));
+openDataFolder();
 } //_CODE_:btn_open:975310:
 
 
