@@ -17,6 +17,7 @@ int port = 0;
 int timeFeed = 5;
 int closeAngle = 40;
 int openAngle = 90;
+int doorDelay = 15;
 
 //objects
 Arduino ardu;
@@ -24,15 +25,16 @@ Arduino ardu;
 public void setup() {
   ardu = new Arduino(this, Arduino.list()[port], 57600);
   ardu.pinMode(vibr, Arduino.OUTPUT);
-  ardu.pinMode(pump, Arduino.PWM);
+  ardu.pinMode(pump, Arduino.OUTPUT);
   ardu.pinMode(vibr, Arduino.OUTPUT);
   ardu.pinMode(pokeL, Arduino.INPUT);
   ardu.pinMode(pokeR, Arduino.INPUT);
   ardu.pinMode(door, Arduino.SERVO);
   ardu.pinMode(inSensor, Arduino.INPUT);
-  size(330, 290, JAVA2D);
+  size(330, 330, JAVA2D);
   createGUI();
   customGUI();
+  ardu.servoWrite(door,closeAngle);
 }
 
 public void draw() {
@@ -43,11 +45,13 @@ public void draw() {
 public void customGUI() {
   fld_freq.setNumericType(G4P.INTEGER);
   fld_repeats.setNumericType(G4P.INTEGER);
-  fld_vibr_duration.setNumericType(G4P.DECIMAL);
+  fld_vibr_duration.setNumericType(G4P.INTEGER);
   fld_response_time.setNumericType(G4P.DECIMAL);
   fld_time_experiments.setNumericType(G4P.DECIMAL);
+  fld_door_time.setNumericType(G4P.INTEGER);
 }
 
+//common functions
 void appendTextToFile(String filename, String text) {
   File f = new File(dataPath(filename));
   if (!f.exists()) {
@@ -73,7 +77,6 @@ void createFile(File f) {
     e.printStackTrace();
   }
 }   
-
 void fill(int motor)
 {
   println("Filling!");
@@ -82,7 +85,6 @@ void fill(int motor)
   ardu.digitalWrite(motor, Arduino.LOW);
   println("Done!");
 }
-
 void feed(int motor)
 {
   ardu.digitalWrite(motor, Arduino.HIGH);
@@ -103,15 +105,16 @@ void vibrate(int ifreq, int iduration)
     duration = (ifreq*iduration)-1;
     for (int i = 0; i <= duration; i++)
     {
-      ardu.digitalWrite(3, Arduino.HIGH);
+      ardu.digitalWrite(vibr, Arduino.HIGH);
       delay(10);
-      ardu.digitalWrite(3, Arduino.LOW);
+      ardu.digitalWrite(vibr, Arduino.LOW);
       delay(off_time);
     }
   } else {
     delay(iduration);
   }
 }
+
 
 boolean checkFields() {
   boolean test;
@@ -123,7 +126,6 @@ boolean checkFields() {
   }
   return test;
 }
-
 void openDataFolder() {
   println("Opening folder:"+dataPath(""));
   if (System.getProperty("os.name").toLowerCase().contains("windows")) {
@@ -151,45 +153,65 @@ void writeSeparator(String flname)
   appendTextToFile(flname, "");
 }
 
+void closeDoor(){
+  for(int i = openAngle;i>closeAngle;i++){
+    ardu.servoWrite(door,i);
+    delay(doorDelay);
+  }
+}
+void openDoor(){
+  ardu.servoWrite(door,openAngle);
+}
+
+
 void doExperiment(String flname, int times) {
-  if (checkFields()) {
+   {
     boolean runLoop;
+    boolean feedIt;
+    boolean touchedPoke;
     String filename = fld_name.getText()+".txt";
     writeParamsToFile(filename);
     writeSeparator(filename);
     writeTableHeader(filename);  
     for (int i=1; i<=times; i++) {
+      StringBuilder chain = new StringBuilder(Integer.toString(i));
+      vibrate(fld_freq.getValueI(),fld_vibr_duration.getValueI());
+      delay(fld_door_time.getValueI()*1000);
+      openDoor();
       int timeStart=millis();
       int timeStop=timeStart+int(fld_response_time.getValueF()*1000);
-      StringBuilder chain = new StringBuilder(Integer.toString(i));
       runLoop=true;
+      feedIt=false;
+      touchedPoke=false;
       while(runLoop){
         if(millis() >= timeStop){
           chain.append(","+float((millis()-timeStart)/1000)+",0,0");
+          closeDoor();
           runLoop=false;
-        } else if(ardu.digitalRead(pokeL)==Arduino.HIGH){
+        } else if((ardu.digitalRead(pokeL)==Arduino.HIGH)&&(touchedPoke == false)){
           chain.append(","+float((millis()-timeStart)/1000)+",1,0");
-          runLoop=false;
-        } else if(ardu.digitalRead(pokeR)==Arduino.HIGH){
+          feedIt=true;
+          touchedPoke=true;
+        } else if((ardu.digitalRead(pokeR)==Arduino.HIGH)&&(touchedPoke == false)){
           chain.append(","+float((millis()-timeStart)/1000)+",0,1");
-          runLoop=false;
+          feedIt=true;
+          touchedPoke=true;
+        }else if(ardu.digitalRead(inSensor)==Arduino.LOW){
+          closeDoor();
+          if(feedIt){
+            feed(pump);
+            runLoop=false;
+          }
         }
-        
       }
       appendTextToFile(filename,chain.toString());
+      delay(int(fld_time_experiments.getValueF()*1000));
+      println(int(fld_time_experiments.getValueF()*1000));
     }
     writeSeparator(filename);
     appendTextToFile(filename,"finished:" + day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second());
     writeSeparator(filename);
     writeSeparator(filename);
+
   }
-}
-void closeDoor(){
-  for(int i=openAngle;i>closeAngle;i--){
-    ardu.servoWrite(door,i);
-    delay(5);
-  }
-}
-void openDoor(){
-  ardu.servoWrite(door,openAngle);
 }
