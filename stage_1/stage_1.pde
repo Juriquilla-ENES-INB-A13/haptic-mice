@@ -15,8 +15,8 @@ int door = 4;
 int inSensor = 2;
 int port = 0;
 int timeFeed = 5;
-int closeAngle = 40;
-int openAngle = 90;
+int closeAngle = 35;
+int openAngle = 80;
 int doorDelay = 15;
 
 //objects
@@ -101,12 +101,12 @@ void vibrate(int ifreq, int iduration)
   if (ifreq > 0)
   {
     int off_time, duration;
-    off_time = (1000/ifreq);
+    off_time = (1000/ifreq)-25;
     duration = (ifreq*iduration)-1;
     for (int i = 0; i <= duration; i++)
     {
       ardu.digitalWrite(vibr, Arduino.HIGH);
-      delay(10);
+      delay(25);
       ardu.digitalWrite(vibr, Arduino.LOW);
       delay(off_time);
     }
@@ -118,7 +118,7 @@ void vibrate(int ifreq, int iduration)
 
 boolean checkFields() {
   boolean test;
-  if ((fld_freq.getValueI() != 0) || (fld_vibr_duration.getValueI() != 0) || (fld_response_time.getValueI() != 0) || (fld_repeats.getValueI()!=0) || (fld_time_experiments.getValueI() != 0) || (fld_name.getText() != "")) {
+  if ((fld_freq.getValueI() != 0) || (fld_vibr_duration.getValueI() != 0) || (fld_response_time.getValueI() != 0) || (fld_repeats.getValueI()!=0) || (fld_time_experiments.getValueI() != 0) || (fld_name.getText() != "")||(fld_door_time.getValueI()!=0)) {
     test=true;
   } else {
     println("ERROR: No empty fields allowed! ");
@@ -154,7 +154,7 @@ void writeSeparator(String flname)
 }
 
 void closeDoor(){
-  for(int i = openAngle;i>closeAngle;i++){
+  for(int i = openAngle;i>closeAngle;i--){
     ardu.servoWrite(door,i);
     delay(doorDelay);
   }
@@ -184,6 +184,7 @@ void doExperiment(String flname, int times) {
       feedIt=false;
       touchedPoke=false;
       while(runLoop){
+        println(ardu.digitalRead(pokeL) + ardu.digitalRead(pokeR));
         if(millis() >= timeStop){
           chain.append(","+float((millis()-timeStart)/1000)+",0,0");
           closeDoor();
@@ -196,9 +197,9 @@ void doExperiment(String flname, int times) {
           chain.append(","+float((millis()-timeStart)/1000)+",0,1");
           feedIt=true;
           touchedPoke=true;
-        }else if(ardu.digitalRead(inSensor)==Arduino.LOW){
-          closeDoor();
+        }else if(ardu.digitalRead(inSensor)==Arduino.HIGH){
           if(feedIt){
+            closeDoor();
             feed(pump);
             runLoop=false;
           }
@@ -206,7 +207,6 @@ void doExperiment(String flname, int times) {
       }
       appendTextToFile(filename,chain.toString());
       delay(int(fld_time_experiments.getValueF()*1000));
-      println(int(fld_time_experiments.getValueF()*1000));
     }
     writeSeparator(filename);
     appendTextToFile(filename,"finished:" + day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second());

@@ -1,0 +1,108 @@
+started: 4-9-2020 18:10:2
+freq:40 time:0.0 response_time:1.0 repeats:1 exp_time:1.0
+
+repeat,ellapsed_time,pokeL,pokeR
+1,1.0,0,0
+
+finished:4-9-2020 18:10:11
+
+
+started: 4-9-2020 18:10:22
+freq:20 time:0.0 response_time:1.0 repeats:1 exp_time:1.0
+
+repeat,ellapsed_time,pokeL,pokeR
+1,1.0,0,0
+
+finished:4-9-2020 18:10:31
+
+
+started: 4-9-2020 18:10:33
+freq:20 time:0.0 response_time:1.0 repeats:1 exp_time:1.0
+
+repeat,ellapsed_time,pokeL,pokeR
+1,1.0,0,0
+
+finished:4-9-2020 18:10:42
+
+
+started: 4-9-2020 18:10:47
+freq:40 time:0.0 response_time:1.0 repeats:1 exp_time:1.0
+
+repeat,ellapsed_time,pokeL,pokeR
+1,1.0,0,0
+
+finished:4-9-2020 18:10:56
+
+
+started: 4-9-2020 18:11:0
+freq:10 time:0.0 response_time:1.0 repeats:1 exp_time:1.0
+
+repeat,ellapsed_time,pokeL,pokeR
+1,1.0,0,0
+
+finished:4-9-2020 18:11:8
+
+
+started: 4-9-2020 18:11:8
+freq:10 time:0.0 response_time:1.0 repeats:1 exp_time:1.0
+
+repeat,ellapsed_time,pokeL,pokeR
+1,1.0,0,0
+
+finished:4-9-2020 18:11:17
+
+
+started: 4-9-2020 18:11:20
+freq:10 time:0.0 response_time:1.0 repeats:1 exp_time:1.0
+
+repeat,ellapsed_time,pokeL,pokeR
+1,1.0,0,0
+
+finished:4-9-2020 18:11:29
+
+
+started: 4-9-2020 18:11:34
+freq:10 time:0.0 response_time:1.0 repeats:1 exp_time:1.0
+
+repeat,ellapsed_time,pokeL,pokeR
+1,1.0,0,0
+
+finished:4-9-2020 18:11:43
+
+
+started: 4-9-2020 18:12:17
+freq:10 time:0.0 response_time:1.0 repeats:1 exp_time:1.0
+
+repeat,ellapsed_time,pokeL,pokeR
+1,1.0,0,0
+
+finished:4-9-2020 18:12:34
+
+
+started: 4-9-2020 18:12:36
+freq:10 time:0.0 response_time:1.0 repeats:1 exp_time:1.0
+
+repeat,ellapsed_time,pokeL,pokeR
+1,1.0,0,0
+
+finished:4-9-2020 18:12:53
+
+
+started: 4-9-2020 18:12:57
+freq:10 time:0.0 response_time:1.0 repeats:1 exp_time:1.0
+
+repeat,ellapsed_time,pokeL,pokeR
+1,1.0,0,0
+
+finished:4-9-2020 18:13:8
+
+
+started: 4-9-2020 18:13:21
+freq:10 time:0.0 response_time:1.0 repeats:1 exp_time:1.0
+
+repeat,ellapsed_time,pokeL,pokeR
+1,1.0,0,0
+
+finished:4-9-2020 18:13:35
+
+

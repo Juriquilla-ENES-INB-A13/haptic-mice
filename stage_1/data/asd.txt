@@ -1,0 +1,81 @@
+started: 4-9-2020 17:57:47
+freq:1 time:0.0 response_time:1.0 repeats:1 exp_time:1.0
+
+repeat,ellapsed_time,pokeL,pokeR
+1,1.0,0,0
+
+finished:4-9-2020 17:57:52
+
+
+started: 4-9-2020 17:58:3
+freq:1 time:0.0 response_time:1.0 repeats:5 exp_time:1.0
+
+repeat,ellapsed_time,pokeL,pokeR
+1,1.0,0,0
+2,1.0,0,0
+3,1.0,0,0
+4,1.0,0,0
+5,1.0,0,0
+
+finished:4-9-2020 17:58:27
+
+
+started: 4-9-2020 17:58:38
+freq:1 time:0.0 response_time:1.0 repeats:5 exp_time:1.0
+
+repeat,ellapsed_time,pokeL,pokeR
+1,1.0,0,0
+2,1.0,0,0
+3,1.0,0,0
+4,1.0,0,0
+5,1.0,0,0
+
+finished:4-9-2020 17:59:2
+
+
+started: 4-9-2020 17:59:9
+freq:1 time:0.0 response_time:1.0 repeats:5 exp_time:1.0
+
+repeat,ellapsed_time,pokeL,pokeR
+1,1.0,0,0
+2,1.0,0,0
+3,1.0,0,0
+4,1.0,0,0
+5,1.0,0,0
+
+finished:4-9-2020 17:59:32
+
+
+started: 4-9-2020 18:0:24
+freq:10 time:0.0 response_time:1.0 repeats:5 exp_time:1.0
+
+repeat,ellapsed_time,pokeL,pokeR
+1,1.0,0,0
+2,1.0,0,0
+3,1.0,0,0
+4,1.0,0,0
+5,1.0,0,0
+
+finished:4-9-2020 18:1:20
+
+
+started: 4-9-2020 18:1:28
+freq:10 time:0.0 response_time:1.0 repeats:2 exp_time:1.0
+
+repeat,ellapsed_time,pokeL,pokeR
+1,1.0,0,0
+2,1.0,0,0
+
+finished:4-9-2020 18:1:51
+
+
+started: 4-9-2020 18:2:9
+freq:10 time:0.0 response_time:1.0 repeats:2 exp_time:1.0
+
+repeat,ellapsed_time,pokeL,pokeR
+1,1.0,0,0
+2,1.0,0,0
+
+finished:4-9-2020 18:2:32
+
+
