@@ -22,6 +22,16 @@ int numOk = 0;
 int numFail = 0;
 int numIteration = 0;
 boolean runLoop;
+boolean feedIt;
+boolean touchedPoke;
+String filename = fld_name.getText()+".txt";
+int max_freq;
+int time1;
+int delay_wait;
+int min_freq;
+int time2;
+
+
 
 //objects
 Arduino ardu;
@@ -45,16 +55,15 @@ public void setup(){
 
 public void draw(){
   background(230);
-  
 }
 
 // Use this method to add additional statements
 // to customise the GUI controls
 public void customGUI(){
- fld_freq1.setNumericType(G4P.INTEGER); 
+ fld_min_freq.setNumericType(G4P.INTEGER); 
  fld_time1.setNumericType(G4P.DECIMAL); 
  fld_wait_time.setNumericType(G4P.DECIMAL); 
- fld_freq2.setNumericType(G4P.INTEGER); 
+ fld_max_freq.setNumericType(G4P.INTEGER); 
  fld_time2.setNumericType(G4P.DECIMAL); 
  fld_door_time.setNumericType(G4P.DECIMAL);
  fld_response_time.setNumericType(G4P.DECIMAL);
@@ -135,16 +144,17 @@ void openDataFolder() {
     launch(dataPath(""));
   }
 }
+
 void writeParamsToFile(String flname)
 {
   println("FILE:"+flname);
   String datetime = new String(day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second());
   println(datetime);
   String params = new String(
-    "freq1:" + fld_freq1.getValueI() +
+    "min freq:" + fld_min_freq.getValueI() +
     " time1:"+ fld_time1.getValueF() +
     " wait time:"+fld_wait_time.getValueF() +
-    " freq2:" + fld_freq2.getValueI() +
+    " max freq:" + fld_max_freq.getValueI() +
     " time2:"+ fld_time2.getValueF()+
     " open door:"+ fld_door_time.getValueF()+
     " time response:"+ fld_response_time.getValueF()+
@@ -158,7 +168,7 @@ void writeParamsToFile(String flname)
 }
 void writeTableHeader(String flname)
 {
-  appendTextToFile(flname, "repeat,poke,ellapsed_time_poke,ellapsed_time_feed");
+  appendTextToFile(flname, "repeat,freq1,freq2,poke,ellapsed_time_poke,ellapsed_time_feed");
 }
 void writeSeparator(String flname)
 {
@@ -185,10 +195,10 @@ void setExperimentTitle(){
 //Experiment specific functions
 boolean checkFields() {
   boolean test;
-  if ((fld_freq1.getValueI() != 0) ||
+  if ((fld_min_freq.getValueI() != 0) ||
   (fld_time1.getValueI() != 0)||
   (fld_wait_time.getValueI() != 0) ||
-  (fld_freq2.getValueI()!=0)||
+  (fld_max_freq.getValueI()!=0)||
   (fld_time2.getValueI()!=0)||
   (fld_response_time.getValueI() != 0) || 
   (fld_repeats.getValueI()!=0) || 
@@ -205,14 +215,12 @@ boolean checkFields() {
 
 void doExperiment(String flname, int times) {
    {
-    boolean feedIt;
-    boolean touchedPoke;
-    String filename = fld_name.getText()+".txt";
-    int freq1 = fld_freq1.getValueI();
-    int time1 = int(fld_time1.getValueF()*1000);
-    int delay_wait = int(fld_wait_time.getValueF()*1000);
-    int freq2 = fld_freq2.getValueI();
-    int time2 = int(fld_time2.getValueF()*1000);
+    int tempFreq1, tempFreq2;
+    max_freq = fld_max_freq.getValueI();
+    time1 = int(fld_time1.getValueF()*1000);
+    delay_wait = int(fld_wait_time.getValueF()*1000);
+    min_freq = fld_min_freq.getValueI();
+    time2 = int(fld_time2.getValueF()*1000);
     numIteration=0;
     numOk=0;
     numFail=0;
@@ -222,10 +230,16 @@ void doExperiment(String flname, int times) {
     for (int i=1; i<=times; i++) {
       setExperimentTitle();
       numIteration=i;
+      tempFreq1 = int(random(min_freq,max_freq));
+      tempFreq2 = int(random(min_freq,max_freq));
       StringBuilder chain = new StringBuilder(Integer.toString(i));
-      vibrate(freq1,time1);
+      chain.append(",")
+      chain.append(tempFreq1);
+      chain.append(",");
+      chain.append(tempFreq2);
+      vibrate(tempFreq1,time1);
       delay(delay_wait);
-      vibrate(freq2,time2);
+      vibrate(tempFreq2,time2);
       delay(fld_door_time.getValueI()*1000);
       openDoor();
       int timeStart=millis();

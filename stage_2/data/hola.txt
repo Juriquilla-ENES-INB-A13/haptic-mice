@@ -1,0 +1,6 @@
+started: 9-9-2020 22:58:10
+freq1:1 time1:10.0 wait time:0 freq2:3 time2:11.0 open door:0 time response:0.0 repeats:6 exp_time:7.0 close door:9.0
+started: 9-9-2020 22:59:16
+freq1:1 time1:2.0 wait time:3.0 freq2:4 time2:5.0 open door:6.0 time response:0.0 repeats:8 exp_time:9.0 close door:22.0
+started: 9-9-2020 23:0:30
+freq1:1 time1:10.0 wait time:2.0 freq2:3 time2:11.0 open door:4.0 time response:5.0 repeats:6 exp_time:7.0 close door:9.0
