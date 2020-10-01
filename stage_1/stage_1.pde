@@ -35,7 +35,7 @@ public void setup() {
   ardu.pinMode(pokeR, Arduino.INPUT);
   ardu.pinMode(door, Arduino.SERVO);
   ardu.pinMode(inSensor, Arduino.INPUT);
-  size(430, 330, JAVA2D);
+  size(530, 330, JAVA2D);
   createGUI();
   customGUI();
   ardu.servoWrite(door,closeAngle);
