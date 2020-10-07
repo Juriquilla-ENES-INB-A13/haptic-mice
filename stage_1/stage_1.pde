@@ -14,6 +14,8 @@ int pokeR = 7;
 int door = 4;
 int inSensor = 2;
 int port = 0;
+
+//Other variables
 int timeFeed = 5;
 int closeAngle = 40;
 int openAngle = 85;
@@ -35,7 +37,7 @@ public void setup() {
   ardu.pinMode(pokeR, Arduino.INPUT);
   ardu.pinMode(door, Arduino.SERVO);
   ardu.pinMode(inSensor, Arduino.INPUT);
-  size(530, 330, JAVA2D);
+  size(630, 330, JAVA2D);
   createGUI();
   customGUI();
   ardu.servoWrite(door,closeAngle);
