@@ -46,7 +46,7 @@ public void setup(){
   ardu.pinMode(pokeR, Arduino.INPUT);
   ardu.pinMode(door, Arduino.SERVO);
   ardu.pinMode(inSensor, Arduino.INPUT);
-  size(480, 380, JAVA2D);
+  size(630, 380, JAVA2D);
   createGUI();
   customGUI();
   // Place your setup code here
