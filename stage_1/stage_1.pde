@@ -104,12 +104,8 @@ void feed(int motor)
   delay(timeFeed);
   ardu.digitalWrite(motor, Arduino.LOW);
 }
-<<<<<<< HEAD
 
 void vibrate()
-=======
-void vibrate(int ifreq, int iduration)
->>>>>>> d860144bfe21516ded972f4b985a7c12f6d89df6
 {
   int ifreq=fld_freq.getValueI();
   int iduration=fld_vibr_duration.getValueI()*1000;
@@ -121,11 +117,7 @@ void vibrate(int ifreq, int iduration)
     for (int i = 0; i <= duration; i++)
     {
       ardu.digitalWrite(vibr, Arduino.HIGH);
-<<<<<<< HEAD
       delay(25);
-=======
-      delay(10);
->>>>>>> d860144bfe21516ded972f4b985a7c12f6d89df6
       ardu.digitalWrite(vibr, Arduino.LOW);
       delay(off_time);
     }
@@ -133,11 +125,8 @@ void vibrate(int ifreq, int iduration)
     delay(iduration);
   }
 }
-<<<<<<< HEAD
 
 
-=======
->>>>>>> d860144bfe21516ded972f4b985a7c12f6d89df6
 boolean checkFields() {
   boolean test;
   if ((fld_freq.getValueI() != 0) || (fld_vibr_duration.getValueI() != 0) || (fld_response_time.getValueI() != 0) || (fld_repeats.getValueI()!=0) || (fld_time_experiments.getValueI() != 0) || (fld_name.getText() != "")||(fld_close_door.getValueI() != 0)) {
@@ -176,7 +165,6 @@ void writeSeparator(String flname)
 }
 
 void closeDoor(){
-<<<<<<< HEAD
   ardu.pinMode(door,Arduino.SERVO);
   for(int i = openAngle;i>closeAngle;i--){
     ardu.servoWrite(door,i);
@@ -201,21 +189,6 @@ void doExperiment() {
     int times = fld_repeats.getValueI();
     boolean feedIt;
     boolean touchedPoke;
-=======
-  for(int i=openAngle;i>closeAngle;i--){
-    ardu.servoWrite(door,i);
-    delay(5);
-  }
-}
-void openDoor(){
-  ardu.servoWrite(door,openAngle);
-}
-
-
-void doExperiment(String flname, int times) {
-  if (checkFields()) {
-    boolean runLoop;
->>>>>>> d860144bfe21516ded972f4b985a7c12f6d89df6
     String filename = fld_name.getText()+".txt";
     writeParamsToFile(filename);
     writeSeparator(filename);
@@ -229,12 +202,6 @@ void doExperiment(String flname, int times) {
       openDoor();
       int timeStart=millis();
       int timeStop=timeStart+int(fld_response_time.getValueF()*1000);
-<<<<<<< HEAD
-=======
-      StringBuilder chain = new StringBuilder(Integer.toString(i));
-      vibrate(fld_freq.getValueI(),int(fld_vibr_duration.getValueF()*1000));
-      openDoor();
->>>>>>> d860144bfe21516ded972f4b985a7c12f6d89df6
       runLoop=true;
       feedIt=false;
       touchedPoke=false;
@@ -266,11 +233,7 @@ void doExperiment(String flname, int times) {
         }
       }
       appendTextToFile(filename,chain.toString());
-<<<<<<< HEAD
       delay(int(fld_time_experiments.getValueF()*1000));
-=======
-      closeDoor();
->>>>>>> d860144bfe21516ded972f4b985a7c12f6d89df6
     }
     writeSeparator(filename);
     appendTextToFile(filename,"finished:" + day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second());
