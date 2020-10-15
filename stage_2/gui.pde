@@ -100,15 +100,15 @@ public void createGUI(){
   fld_name.setOpaque(true);
   fld_close_door = new GTextField(this, 140, 340, 90, 20, G4P.SCROLLBARS_NONE);
   fld_close_door.setOpaque(true);
-  btn_fill = new GButton(this, 330, 160, 80, 30);
+  btn_fill = new GButton(this, 20, 400, 80, 30);
   btn_fill.setText("Fill");
   btn_fill.setLocalColorScheme(GCScheme.GOLD_SCHEME);
   btn_fill.addEventHandler(this, "fill_click1");
-  btn_start = new GButton(this, 330, 210, 80, 30);
+  btn_start = new GButton(this, 190, 400, 80, 30);
   btn_start.setText("Start");
   btn_start.setLocalColorScheme(GCScheme.GREEN_SCHEME);
   btn_start.addEventHandler(this, "button1_click1");
-  btn_open = new GButton(this, 330, 260, 80, 30);
+  btn_open = new GButton(this, 320, 400, 80, 30);
   btn_open.setText("Open..");
   btn_open.addEventHandler(this, "open_click1");
   fld_response_time = new GTextField(this, 140, 180, 90, 20, G4P.SCROLLBARS_NONE);
