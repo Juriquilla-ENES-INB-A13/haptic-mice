@@ -21,6 +21,8 @@ int doorDelay = 15;
 int numOk = 0;
 int numFail = 0;
 int numIteration = 0;
+int freq1;
+int freq2;
 boolean runLoop;
 boolean stopExperiment;
 

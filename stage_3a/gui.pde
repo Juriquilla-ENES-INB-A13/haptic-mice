@@ -21,19 +21,19 @@ public void fill_click(GButton source, GEvent event) { //_CODE_:btn_fill:241519:
 public void start_click1(GButton source, GEvent event) { //_CODE_:btn_start:428180:
   if(checkFields()&&runLoop==false){
     stopExperiment=false;
-    if(fld_freq1.getValueI()>fld_freq2.getValueI()){
+    if(freq1>freq2){
       println("RUN:test ->");
       btn_stop.setVisible(true);
       btn_start.setVisible(false);
       thread("doExperimentR");
-    }else if(fld_freq1.getValueI()<fld_freq2.getValueI()){
+    }else if(freq1<freq2){
       println("RUN:test <-");
       btn_stop.setVisible(true);
       btn_start.setVisible(false);
       thread("doExperimentL");
-    }
   }
-} //_CODE_:btn_start:428180:
+  }
+}//_CODE_:btn_start:428180:
 
 public void open_click(GButton source, GEvent event) { //_CODE_:btn_open:719474:
 
@@ -64,6 +64,10 @@ public void stop_click(GButton source, GEvent event) { //_CODE_:btn_stop:242696:
   stopExperiment=true;
 } //_CODE_:btn_stop:242696:
 
+public void btn_rando_click(GButton source, GEvent event) { //_CODE_:btn_randomize:912195:
+  randomFreqs();
+} //_CODE_:btn_randomize:912195:
+
 
 
 // Create all the GUI controls. 
@@ -72,7 +76,7 @@ public void createGUI(){
   G4P.messagesEnabled(false);
   G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
   G4P.setMouseOverEnabled(false);
-  surface.setTitle("Haptic Mice - Stage 2");
+  surface.setTitle("Haptic Mice - Stage 3");
   lbl_freq1 = new GLabel(this, 20, 60, 140, 20);
   lbl_freq1.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
   lbl_freq1.setText("freq1:");
@@ -175,6 +179,10 @@ public void createGUI(){
   btn_stop.setText("stop!");
   btn_stop.setLocalColorScheme(GCScheme.RED_SCHEME);
   btn_stop.addEventHandler(this, "stop_click");
+  btn_randomize = new GButton(this, 520, 130, 80, 30);
+  btn_randomize.setText("Randomize");
+  btn_randomize.setLocalColorScheme(GCScheme.GOLD_SCHEME);
+  btn_randomize.addEventHandler(this, "btn_rando_click");
 }
 
 // Variable declarations 
@@ -211,3 +219,4 @@ GLabel lbl_connected;
 GButton btn_vibrate; 
 GButton btn_feed; 
 GButton btn_stop; 
+GButton btn_randomize; 

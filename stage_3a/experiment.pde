@@ -27,10 +27,10 @@ void writeParamsToFile(String flname)
   String datetime = new String(day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second());
   println(datetime);
   String params = new String(
-    "freq1:" + fld_freq1.getValueI() +
+    "freq1:" + freq1 +
     " time1:"+ fld_time1.getValueI() +
     " wait_time:"+fld_wait_time.getValueI() +
-    " freq2:" + fld_freq2.getValueI() +
+    " freq2:" + freq2 +
     " time2:"+ fld_time2.getValueI()+
     " open_door:"+ fld_door_time.getValueI()+
     " time_response:"+ fld_response_time.getValueI()+
@@ -41,6 +41,17 @@ void writeParamsToFile(String flname)
   println(params);
   appendTextToFile(flname, "started: "+datetime);
   appendTextToFile(flname, params);
+}
+
+void randomFreqs()
+{
+  freq1 = int(random(fld_freq1.getValueI(),fld_freq2.getValueI()));
+  freq2 = int(random(fld_freq1.getValueI(),fld_freq2.getValueI()));
+  while(freq1 == freq2){
+    freq1 = int(random(fld_freq1.getValueI(),fld_freq2.getValueI()));
+    freq2 = int(random(fld_freq1.getValueI(),fld_freq2.getValueI()));
+  }
+  println("RUN:randomized freq1:"+freq1+",freq2:"+freq2);
 }
 
 void doExperimentR() {
@@ -69,9 +80,9 @@ void doExperimentR() {
       addWindowInfo();
       numIteration=i;
       StringBuilder chain = new StringBuilder(Integer.toString(i));
-      vibrate(fld_freq1.getValueI(),fld_time1.getValueI());
+      vibrate(freq1,fld_time1.getValueI());
       delay(fld_wait_time.getValueI());
-      vibrate(fld_freq2.getValueI(),fld_time2.getValueI());
+      vibrate(freq2,fld_time2.getValueI());
       delay(fld_door_time.getValueI());
       openDoor();
       int timeStart=millis();
@@ -80,6 +91,7 @@ void doExperimentR() {
       feedIt=false;
       touchedPoke=false;
       while(runLoop){
+        addWindowInfo();
         println("RUN:iter:"+i+",pokes:"+ardu.digitalRead(pokeL) +","+ ardu.digitalRead(pokeR));
         if(millis() >= timeStop){
           chain.append(","+(millis()-timeStart)+",0,0,timeout");
@@ -112,8 +124,10 @@ void doExperimentR() {
     appendTextToFile(filename,"Ok:"+numOk+",fail:"+numFail);
     writeSeparator(filename);
     writeSeparator(filename);
+    addWindowInfo();
     
   }
+  
   btn_start.setVisible(true);
   btn_stop.setVisible(false);
 }
@@ -143,9 +157,9 @@ void doExperimentL() {
       addWindowInfo();
       numIteration=i;
       StringBuilder chain = new StringBuilder(Integer.toString(i));
-      vibrate(fld_freq1.getValueI(),fld_time1.getValueI());
+      vibrate(freq1,fld_time1.getValueI());
       delay(fld_wait_time.getValueI());
-      vibrate(fld_freq2.getValueI(),fld_time2.getValueI());
+      vibrate(freq2,fld_time2.getValueI());
       delay(fld_door_time.getValueI());
       openDoor();
       int timeStart=millis();
@@ -154,6 +168,7 @@ void doExperimentL() {
       feedIt=false;
       touchedPoke=false;
       while(runLoop){
+        addWindowInfo();
         println("RUN:iter:"+i+",pokes:"+ardu.digitalRead(pokeL) +","+ ardu.digitalRead(pokeR));
         if(millis() >= timeStop){
           chain.append(","+(millis()-timeStart)+",0,0,timeout");
@@ -186,6 +201,7 @@ void doExperimentL() {
     appendTextToFile(filename,"Ok:"+numOk+",fail:"+numFail);
     writeSeparator(filename);
     writeSeparator(filename);
+    addWindowInfo();
     
   }
   btn_start.setVisible(true);
