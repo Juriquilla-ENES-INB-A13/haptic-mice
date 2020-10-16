@@ -29,27 +29,27 @@ void doExperiment() {
       numIteration=i;
       StringBuilder chain = new StringBuilder(Integer.toString(i));
       vibrate(fld_freq.getValueI(),fld_vibr_duration.getValueI());
-      delay(fld_door_time.getValueI()*1000);
+      delay(fld_door_time.getValueI());
       openDoor();
       int timeStart=millis();
-      int timeStop=timeStart+int(fld_response_time.getValueF()*1000);
+      int timeStop=timeStart+fld_response_time.getValueI();
       runLoop=true;
       feedIt=false;
       touchedPoke=false;
       while(runLoop){
         println(ardu.digitalRead(pokeL) + ardu.digitalRead(pokeR));
         if(millis() >= timeStop){
-          chain.append(","+float((millis()-timeStart)/1000)+",0,0");
+          chain.append(","+(millis()-timeStart)+",0,0");
           numFail++;
-          delay(fld_close_door.getValueI()*1000);
+          delay(fld_close_door.getValueI());
           closeDoor();
           runLoop=false;
         } else if((ardu.digitalRead(pokeL)==Arduino.HIGH)&&(touchedPoke == false)){
-          chain.append(","+float((millis()-timeStart)/1000)+",1,0");
+          chain.append(","+(millis()-timeStart)+",1,0");
           feedIt=true;
           touchedPoke=true;
         } else if((ardu.digitalRead(pokeR)==Arduino.HIGH)&&(touchedPoke == false)){
-          chain.append(","+float((millis()-timeStart)/1000)+",0,1");
+          chain.append(","+(millis()-timeStart)+",0,1");
           feedIt=true;
           touchedPoke=true;
         }else if(ardu.digitalRead(inSensor)==Arduino.HIGH){
@@ -62,7 +62,7 @@ void doExperiment() {
         }
       }
       appendTextToFile(filename,chain.toString());
-      delay(int(fld_time_experiments.getValueF()*1000));
+      delay(fld_time_experiments.getValueI());
     }
     writeSeparator(filename);
     appendTextToFile(filename,"finished:" + day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second());

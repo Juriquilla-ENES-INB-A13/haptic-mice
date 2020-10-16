@@ -4,5 +4,5 @@
 **/application.linux-armv6hf
 **/application.windows32
 **/application.windows64
-/data
+**/data/*.txt
 

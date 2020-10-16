@@ -1,7 +1,11 @@
 //common functions
 
 void setArduino(){
-  println("selected port:"+Serial.list()[lst_port.getSelectedIndex()]);
+  if(ardu != null){
+    ardu.dispose();
+    println("INFO:arduino disconnected!");
+  }
+  println("INFO:connecting to port:"+Serial.list()[lst_port.getSelectedIndex()]);
   ardu = new Arduino(this, Arduino.list()[lst_port.getSelectedIndex()], 57600);
   ardu.pinMode(vibr, Arduino.OUTPUT);
   ardu.pinMode(pump, Arduino.OUTPUT);
@@ -11,9 +15,22 @@ void setArduino(){
   ardu.pinMode(inSensor, Arduino.INPUT);
   ardu.pinMode(10,Arduino.OUTPUT);
   ardu.servoWrite(door,closeAngle);
+  //This make arduino signal an ok connection
   delay(1000);
-  vibrate(2,1);
+  ardu.digitalWrite(10,Arduino.HIGH);
+  delay(100);
+  ardu.digitalWrite(10,Arduino.LOW);
+  delay(100);
+  ardu.digitalWrite(10,Arduino.HIGH);
+  delay(100);
+  ardu.digitalWrite(10,Arduino.LOW);
+  println("INFO:succes!");
   lbl_connected.setText("connected!");
+}
+
+void unsetArduino(){
+  ardu.dispose();
+  println("arduino disconnected!");
 }
 
 void appendTextToFile(String filename, String text) {
@@ -46,11 +63,11 @@ void createFile(File f) {
 //Motor functions
 void fill()
 {
-  println("Filling!");
+  println("RUN:Filling!");
   ardu.digitalWrite(pump, Arduino.HIGH);
   delay(3000);
   ardu.digitalWrite(pump, Arduino.LOW);
-  println("Done!");
+  println("RUN:Done!");
 }
 
 void feed()
@@ -68,15 +85,18 @@ void vibrate(int ifreq, int iduration)
 {
   if (ifreq > 0)
   {
-    int off_time, duration;
+    int off_time, cycles;
     off_time = (1000/ifreq)-25;
-    duration = (ifreq*iduration)-1;
-    for (int i = 0; i <= duration; i++)
+    println("off:"+off_time);
+    cycles = (iduration/(off_time+25))-1;
+    println("cyc:"+cycles);
+    for (int i = 0; i <= cycles; i++)
     {
       ardu.digitalWrite(vibr, Arduino.HIGH);
       delay(25);
       ardu.digitalWrite(vibr, Arduino.LOW);
       delay(off_time);
+      println(i);
     }
   } else {
     delay(iduration);

@@ -1,6 +1,0 @@
-started: 14-10-2020 18:25:25
-freq:5 time:0.0 response_time:5.0 repeats:4 exp_time:1.0
-
-repeat,ellapsed_time,pokeL,pokeR
-1,5.0,0,0
-2,5.0,0,0

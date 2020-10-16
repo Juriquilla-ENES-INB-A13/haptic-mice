@@ -22,6 +22,7 @@ int numOk = 0;
 int numFail = 0;
 int numIteration = 0;
 boolean runLoop;
+boolean stopExperiment;
 
 //objects
 Arduino ardu;
@@ -44,13 +45,13 @@ public void draw(){
 // to customise the GUI controls
 public void customGUI(){
  fld_freq1.setNumericType(G4P.INTEGER); 
- fld_time1.setNumericType(G4P.DECIMAL); 
- fld_wait_time.setNumericType(G4P.DECIMAL); 
+ fld_time1.setNumericType(G4P.INTEGER); 
+ fld_wait_time.setNumericType(G4P.INTEGER); 
  fld_freq2.setNumericType(G4P.INTEGER); 
- fld_time2.setNumericType(G4P.DECIMAL); 
- fld_door_time.setNumericType(G4P.DECIMAL);
- fld_response_time.setNumericType(G4P.DECIMAL);
+ fld_time2.setNumericType(G4P.INTEGER); 
+ fld_door_time.setNumericType(G4P.INTEGER);
+ fld_response_time.setNumericType(G4P.INTEGER);
  fld_repeats.setNumericType(G4P.INTEGER); 
- fld_time_experiments.setNumericType(G4P.DECIMAL); 
- fld_close_door.setNumericType(G4P.DECIMAL); 
+ fld_time_experiments.setNumericType(G4P.INTEGER); 
+ fld_close_door.setNumericType(G4P.INTEGER); 
 }

@@ -1,7 +1,11 @@
 //common functions
 
 void setArduino(){
-  println("selected port:"+Serial.list()[lst_port.getSelectedIndex()]);
+  if(ardu != null){
+    ardu.dispose();
+    println("INFO:arduino disconnected!");
+  }
+  println("INFO:connecting to port:"+Arduino.list()[lst_port.getSelectedIndex()]);
   ardu = new Arduino(this, Arduino.list()[lst_port.getSelectedIndex()], 57600);
   ardu.pinMode(vibr, Arduino.OUTPUT);
   ardu.pinMode(pump, Arduino.OUTPUT);
@@ -11,9 +15,22 @@ void setArduino(){
   ardu.pinMode(inSensor, Arduino.INPUT);
   ardu.pinMode(10,Arduino.OUTPUT);
   ardu.servoWrite(door,closeAngle);
+  //This make arduino signal an ok connection
   delay(1000);
-  vibrate(2,1);
+  ardu.digitalWrite(10,Arduino.HIGH);
+  delay(100);
+  ardu.digitalWrite(10,Arduino.LOW);
+  delay(100);
+  ardu.digitalWrite(10,Arduino.HIGH);
+  delay(100);
+  ardu.digitalWrite(10,Arduino.LOW);
+  println("INFO:success!");
   lbl_connected.setText("connected!");
+}
+
+void unsetArduino(){
+  ardu.dispose();
+  println("arduino disconnected!");
 }
 
 void appendTextToFile(String filename, String text) {
@@ -46,15 +63,16 @@ void createFile(File f) {
 //Motor functions
 void fill()
 {
-  println("Filling!");
+  println("RUN:Filling!");
   ardu.digitalWrite(pump, Arduino.HIGH);
   delay(3000);
   ardu.digitalWrite(pump, Arduino.LOW);
-  println("Done!");
+  println("RUN:Done!");
 }
 
 void feed()
 {
+  println("RUN:feed");
   ardu.digitalWrite(pump, Arduino.HIGH);
   delay(timeFeed);
   ardu.digitalWrite(pump, Arduino.LOW);
@@ -66,12 +84,13 @@ void feed()
 
 void vibrate(int ifreq, int iduration)
 {
+  println("RUN:freq "+ifreq+",dur "+iduration);
   if (ifreq > 0)
   {
-    int off_time, duration;
+    int off_time, cycles;
     off_time = (1000/ifreq)-25;
-    duration = (ifreq*iduration)-1;
-    for (int i = 0; i <= duration; i++)
+    cycles = (iduration/(off_time+25))-1;
+    for (int i = 0; i <= cycles; i++)
     {
       ardu.digitalWrite(vibr, Arduino.HIGH);
       delay(25);
@@ -83,16 +102,6 @@ void vibrate(int ifreq, int iduration)
   }
 }
 
-boolean checkFields() {
-  boolean test;
-  if ((fld_freq.getValueI() != 0) || (fld_vibr_duration.getValueI() != 0) || (fld_response_time.getValueI() != 0) || (fld_repeats.getValueI()!=0) || (fld_time_experiments.getValueI() != 0) || (fld_name.getText() != "")||(fld_close_door.getValueI() != 0)) {
-    test=true;
-  } else {
-    println("ERROR: No empty fields allowed! ");
-    test=false;
-  }
-  return test;
-}
 void openDataFolder() {
   println("Opening folder:"+dataPath(""));
   if (System.getProperty("os.name").toLowerCase().contains("windows")) {
@@ -102,20 +111,9 @@ void openDataFolder() {
   }
 }
 
-void writeParamsToFile(String flname)
-{
-  println("FILE:"+flname);
-  String datetime = new String(day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second());
-  println(datetime);
-  String params = new String("freq:" + fld_freq.getValueI()+" time:"+fld_vibr_duration.getValueF()+" response_time:"+fld_response_time.getValueF()+" repeats:"+fld_repeats.getValueI()+" exp_time:"+fld_time_experiments.getValueF());
-  println(params);
-  appendTextToFile(flname, "started: "+datetime);
-  appendTextToFile(flname, params);
-}
-
 void writeTableHeader(String flname)
 {
-  appendTextToFile(flname, "repeat,ellapsed_time,pokeL,pokeR");
+  appendTextToFile(flname, "repeat,ellapsed_time,pokeL,pokeR,status");
 }
 
 void writeSeparator(String flname)
@@ -136,5 +134,5 @@ void openDoor(){
 }
 
 void addWindowInfo(){
-  surface.setTitle("Stage 1 "+day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second()+ "  Iteration:"+numIteration+ " OK:"+numOk+" Fail:"+numFail);
+  surface.setTitle("Stage 3 "+day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second()+ "  Iteration:"+numIteration+ " OK:"+numOk+" Fail:"+numFail);
 }

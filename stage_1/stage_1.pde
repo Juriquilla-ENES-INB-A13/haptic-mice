@@ -24,31 +24,27 @@ int numOk = 0;
 int numFail = 0;
 int numIteration = 0;
 boolean runLoop =false;
-boolean vibrate=false;
-boolean feed=false;
 
 //objects
 Arduino ardu;
 
 public void setup() {
-
   size(630, 430, JAVA2D);
   createGUI();
   customGUI();
-  
 }
 
 public void draw() {
   addWindowInfo();
-  background(200);
+  background(230);
 }
 
 public void customGUI() {
   fld_freq.setNumericType(G4P.INTEGER);
   fld_repeats.setNumericType(G4P.INTEGER);
   fld_vibr_duration.setNumericType(G4P.INTEGER);
-  fld_response_time.setNumericType(G4P.DECIMAL);
-  fld_time_experiments.setNumericType(G4P.DECIMAL);
+  fld_response_time.setNumericType(G4P.INTEGER);
+  fld_time_experiments.setNumericType(G4P.INTEGER);
   fld_door_time.setNumericType(G4P.INTEGER);
   fld_close_door.setNumericType(G4P.INTEGER);
   btn_stop.setVisible(false);
