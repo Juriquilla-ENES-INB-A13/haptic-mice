@@ -46,10 +46,10 @@ public void setPort_click(GButton source, GEvent event) { //_CODE_:btn_setPort:3
 
 public void vibrate_click(GButton source, GEvent event) { //_CODE_:btn_vibrate:652578:
   if(checkFields()){
-    vibrate(fld_freq1.getValueI(),fld_time1.getValueI());
+    vibrate(freq1,fld_time1.getValueI());
     println("RUN:delay "+fld_wait_time.getValueI());
     delay(fld_wait_time.getValueI());
-    vibrate(fld_freq2.getValueI(),fld_time2.getValueI());
+    vibrate(freq2,fld_time2.getValueI());
   }
 } //_CODE_:btn_vibrate:652578:
 
