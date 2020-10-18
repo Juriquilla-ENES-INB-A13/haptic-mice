@@ -79,6 +79,10 @@ void feed()
 
 void vibrate(int ifreq, int iduration)
 {
+  if((ifreq<1)||(ifreq>40)){
+    println("ERROR: frequency not allowed!");
+    return;
+  }
   println("RUN:freq "+ifreq+",dur "+iduration);
   if (ifreq > 0)
   {
@@ -108,7 +112,7 @@ void openDataFolder() {
 
 void writeTableHeader(String flname)
 {
-  appendTextToFile(flname, "repeat,freq,poke_time,touched_poke,inside_time,status");
+  appendTextToFile(flname, "repeat,freq1,freq2,poke_time,touched_poke,inside_time,status");
 }
 
 void writeSeparator(String flname)
@@ -171,19 +175,21 @@ void writeParamsToFile(String flname)
 void stopExperiment(){
   runLoop=false;
   runExperiment=false;
+  abortExperiment=true;
 }
 
 void randomizeFreq()
 {
-  if(int(random(2))==1){
-    freq=20;
-  }else{
-    freq=40;
-  }
+  String freqsList = fld_freqs.getText();
+  String[] splitedFreqs = freqsList.split(",");
+  println("RUN: "+ splitedFreqs.length+" frequencies to randomize!");
+  freq = Integer.parseInt(splitedFreqs[int(random(splitedFreqs.length))]);
+ println("RUN: randomized freq:"+ freq);
 }
 
 void startExperiment() {
   runExperiment=true;
+  abortExperiment=false;
   filename = fld_name.getText()+".txt";
   vibr_dur = fld_time.getValueI();
   waitForNextExperiment=fld_time_experiments.getValueI();
@@ -221,7 +227,6 @@ void startExperiment() {
       runLoop=true;
       println("RUN:iter:"+numIteration+",freq:"+freq);
       while(runLoop){
-        //println(ardu.digitalRead(ardu.digitalRead(pokeL)+ardu.digitalRead(pokeR)+ardu.digitalRead(inSensor)));
         if(millis() >= timeStop){
           numFail++;
           closeDoor();
@@ -235,10 +240,10 @@ void startExperiment() {
           touchedPoke=true;
           pokeTime=millis()-timeStart;
           whichPoke="left";
-          if (freq==20){
+          if (freq<=20){
             feedIt=true;
             status="ok";
-          }else if(freq==40){
+          }else if(freq>20){
             status="failed";
           }
         } else if((ardu.digitalRead(pokeR)==Arduino.HIGH)&&(touchedPoke == false)){
@@ -246,10 +251,10 @@ void startExperiment() {
           touchedPoke=true;
           pokeTime=millis()-timeStart-door_time;
           whichPoke="right";
-          if(freq==40){
+          if(freq>20){
             feedIt=true;
             status="ok";
-          }else if(freq==20){
+          }else if(freq>=20){
             status="failed";
           }
         }else if(ardu.digitalRead(inSensor)==Arduino.HIGH){
@@ -260,6 +265,7 @@ void startExperiment() {
             numOk++;
             feed();  
           }else{
+            status="failed";
             numFail++;
           }
           runLoop=false;
@@ -270,6 +276,9 @@ void startExperiment() {
       appendTextToFile(filename,numIteration+","+freq+","+pokeTime+","+whichPoke+","+insideTime+","+status);
       delay(waitForNextExperiment);
       numIteration++;
+    }
+    if(abortExperiment){
+      appendTextToFile(filename,"ABORTED!!");
     }
     writeSeparator(filename);
     appendTextToFile(filename,"finished:" + day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second());

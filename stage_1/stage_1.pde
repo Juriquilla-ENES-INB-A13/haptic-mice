@@ -46,6 +46,5 @@ public void customGUI() {
   fld_response_time.setNumericType(G4P.INTEGER);
   fld_time_experiments.setNumericType(G4P.INTEGER);
   fld_door_time.setNumericType(G4P.INTEGER);
-  fld_close_door.setNumericType(G4P.INTEGER);
   btn_stop.setVisible(false);
 }

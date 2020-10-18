@@ -16,6 +16,7 @@ int door = 4;
 int inSensor = 2;
 boolean runLoop;
 boolean runExperiment=false;
+boolean abortExperiment=false;
 int port = 0;
 int timeFeed = 5;
 int closeAngle = 40;
@@ -60,6 +61,6 @@ public void customGUI(){
  fld_door_time.setNumericType(G4P.INTEGER);
  fld_response_time.setNumericType(G4P.INTEGER);
  fld_repeats.setNumericType(G4P.INTEGER); 
- fld_time_experiments.setNumericType(G4P.INTEGER);  
+ fld_time_experiments.setNumericType(G4P.INTEGER); 
  btn_stop.setVisible(false);
 }

@@ -171,6 +171,7 @@ void writeParamsToFile(String flname)
 void stopExperiment(){
   runLoop=false;
   runExperiment=false;
+  abortExperiment=true;
 }
 
 void randomizeFreq()
@@ -270,6 +271,9 @@ void startExperiment() {
       appendTextToFile(filename,numIteration+","+freq+","+pokeTime+","+whichPoke+","+insideTime+","+status);
       delay(waitForNextExperiment);
       numIteration++;
+    }
+    if(abortExperiment){
+      appendTextToFile(filename,"ABORTED!!");
     }
     writeSeparator(filename);
     appendTextToFile(filename,"finished:" + day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second());
