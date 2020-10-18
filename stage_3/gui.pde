@@ -34,12 +34,6 @@ public void setPort_click(GButton source, GEvent event) { //_CODE_:btn_setPort:3
   setArduino();
 } //_CODE_:btn_setPort:396596:
 
-public void btn_20hz_click(GButton source, GEvent event) { //_CODE_:btn_20hz:652578:
-  if(checkFields()){
-    vibrate(20,fld_time.getValueI());
-  }
-} //_CODE_:btn_20hz:652578:
-
 public void feed_click(GButton source, GEvent event) { //_CODE_:btn_feed:628575:
   feed();
 } //_CODE_:btn_feed:628575:
@@ -50,11 +44,12 @@ public void stop_click(GButton source, GEvent event) { //_CODE_:btn_stop:242696:
     btn_stop.setVisible(false);
 } //_CODE_:btn_stop:242696:
 
-public void btn_40hz_click(GButton source, GEvent event) { //_CODE_:btn_40hz:332202:
+public void btn_vibr_click(GButton source, GEvent event) { //_CODE_:btn_vibrate:332202:
   if(checkFields()){
-    vibrate(40,fld_time.getValueI());
+    vibrate(fld_freq1.getValueI(),fld_time.getValueI());
+    delay(fld_
   }
-} //_CODE_:btn_40hz:332202:
+} //_CODE_:btn_vibrate:332202:
 
 
 
@@ -64,42 +59,42 @@ public void createGUI(){
   G4P.messagesEnabled(false);
   G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
   G4P.setMouseOverEnabled(false);
-  surface.setTitle("Haptic Mice - Stage 2");
+  surface.setTitle("Haptic Mice - Stage 3");
   lbl_dur1 = new GLabel(this, 410, 60, 90, 20);
   lbl_dur1.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
   lbl_dur1.setText("duration {ms):");
   lbl_dur1.setOpaque(false);
-  lbl_open_door = new GLabel(this, 40, 100, 140, 20);
+  lbl_open_door = new GLabel(this, 30, 100, 140, 20);
   lbl_open_door.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
   lbl_open_door.setText("time to open door(ms):");
   lbl_open_door.setOpaque(false);
-  lbl_time_response = new GLabel(this, 40, 140, 140, 20);
+  lbl_time_response = new GLabel(this, 30, 140, 140, 20);
   lbl_time_response.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   lbl_time_response.setText("time to response(ms):");
   lbl_time_response.setOpaque(false);
-  lbl_repeats = new GLabel(this, 100, 180, 80, 20);
+  lbl_repeats = new GLabel(this, 90, 180, 80, 20);
   lbl_repeats.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
   lbl_repeats.setText("repeats:");
   lbl_repeats.setOpaque(false);
-  lbl_time_experiments = new GLabel(this, 30, 220, 150, 20);
+  lbl_time_experiments = new GLabel(this, 20, 220, 150, 20);
   lbl_time_experiments.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   lbl_time_experiments.setText("Time betwen exp(ms):");
   lbl_time_experiments.setOpaque(false);
-  lbl_experiment_name = new GLabel(this, 40, 280, 140, 20);
+  lbl_experiment_name = new GLabel(this, 30, 260, 140, 20);
   lbl_experiment_name.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
   lbl_experiment_name.setText("Experiment name:");
   lbl_experiment_name.setOpaque(false);
   fld_time = new GTextField(this, 510, 60, 90, 20, G4P.SCROLLBARS_NONE);
   fld_time.setOpaque(true);
-  fld_door_time = new GTextField(this, 180, 100, 90, 20, G4P.SCROLLBARS_NONE);
+  fld_door_time = new GTextField(this, 170, 100, 90, 20, G4P.SCROLLBARS_NONE);
   fld_door_time.setOpaque(true);
-  fld_repeats = new GTextField(this, 180, 180, 90, 20, G4P.SCROLLBARS_NONE);
+  fld_repeats = new GTextField(this, 170, 180, 90, 20, G4P.SCROLLBARS_NONE);
   fld_repeats.setOpaque(true);
-  fld_time_experiments = new GTextField(this, 180, 220, 90, 20, G4P.SCROLLBARS_NONE);
+  fld_time_experiments = new GTextField(this, 170, 220, 90, 20, G4P.SCROLLBARS_NONE);
   fld_time_experiments.setOpaque(true);
-  fld_name = new GTextField(this, 180, 280, 90, 20, G4P.SCROLLBARS_NONE);
+  fld_name = new GTextField(this, 170, 260, 90, 20, G4P.SCROLLBARS_NONE);
   fld_name.setOpaque(true);
-  btn_fill = new GButton(this, 340, 220, 80, 30);
+  btn_fill = new GButton(this, 370, 220, 80, 30);
   btn_fill.setText("Fill");
   btn_fill.setLocalColorScheme(GCScheme.GOLD_SCHEME);
   btn_fill.addEventHandler(this, "fill_click");
@@ -110,7 +105,7 @@ public void createGUI(){
   btn_open = new GButton(this, 380, 360, 140, 30);
   btn_open.setText("Open data folder");
   btn_open.addEventHandler(this, "open_click");
-  fld_response_time = new GTextField(this, 180, 140, 90, 20, G4P.SCROLLBARS_NONE);
+  fld_response_time = new GTextField(this, 170, 140, 90, 20, G4P.SCROLLBARS_NONE);
   fld_response_time.setOpaque(true);
   lst_port = new GDropList(this, 180, 20, 110, 80, 3, 10);
   lst_port.setItems(loadStrings("list_869471"), 0);
@@ -118,16 +113,12 @@ public void createGUI(){
   lbl_port.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
   lbl_port.setText("port:");
   lbl_port.setOpaque(false);
-  btn_setPort = new GButton(this, 300, 20, 80, 20);
+  btn_setPort = new GButton(this, 310, 20, 80, 20);
   btn_setPort.setText("Open");
   btn_setPort.addEventHandler(this, "setPort_click");
   lbl_connected = new GLabel(this, 410, 20, 160, 20);
   lbl_connected.setText("disconnected");
   lbl_connected.setOpaque(false);
-  btn_20hz = new GButton(this, 480, 290, 80, 30);
-  btn_20hz.setText("20Hz");
-  btn_20hz.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
-  btn_20hz.addEventHandler(this, "btn_20hz_click");
   btn_feed = new GButton(this, 480, 220, 80, 30);
   btn_feed.setText("Feed");
   btn_feed.setLocalColorScheme(GCScheme.GOLD_SCHEME);
@@ -136,10 +127,10 @@ public void createGUI(){
   btn_stop.setText("stop!");
   btn_stop.setLocalColorScheme(GCScheme.RED_SCHEME);
   btn_stop.addEventHandler(this, "stop_click");
-  btn_40hz = new GButton(this, 340, 290, 80, 30);
-  btn_40hz.setText("40Hz");
-  btn_40hz.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
-  btn_40hz.addEventHandler(this, "btn_40hz_click");
+  btn_vibrate = new GButton(this, 420, 140, 80, 30);
+  btn_vibrate.setText("Vibrate");
+  btn_vibrate.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
+  btn_vibrate.addEventHandler(this, "btn_vibr_click");
   fld_freqs = new GTextField(this, 140, 60, 270, 20, G4P.SCROLLBARS_NONE);
   fld_freqs.setText("20,40");
   fld_freqs.setPromptText("Insert frequencies separated by ,");
@@ -148,6 +139,18 @@ public void createGUI(){
   lbl_freqs.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   lbl_freqs.setText("Frequencies (Hz):");
   lbl_freqs.setOpaque(false);
+  lbl_freq1 = new GLabel(this, 330, 100, 80, 20);
+  lbl_freq1.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
+  lbl_freq1.setText("Freq1 (Hz):");
+  lbl_freq1.setOpaque(false);
+  lbl_freq2 = new GLabel(this, 450, 100, 80, 20);
+  lbl_freq2.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
+  lbl_freq2.setText("Freq2 (Hz):");
+  lbl_freq2.setOpaque(false);
+  fld_freq1 = new GTextField(this, 410, 100, 40, 20, G4P.SCROLLBARS_NONE);
+  fld_freq1.setOpaque(true);
+  fld_freq2 = new GTextField(this, 530, 100, 40, 20, G4P.SCROLLBARS_NONE);
+  fld_freq2.setOpaque(true);
 }
 
 // Variable declarations 
@@ -171,9 +174,12 @@ GDropList lst_port;
 GLabel lbl_port; 
 GButton btn_setPort; 
 GLabel lbl_connected; 
-GButton btn_20hz; 
 GButton btn_feed; 
 GButton btn_stop; 
-GButton btn_40hz; 
+GButton btn_vibrate; 
 GTextField fld_freqs; 
 GLabel lbl_freqs; 
+GLabel lbl_freq1; 
+GLabel lbl_freq2; 
+GTextField fld_freq1; 
+GTextField fld_freq2; 
