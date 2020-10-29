@@ -183,6 +183,7 @@ void doExperiment() {
       openDoor();
       int timeStart=millis();
       int timeStop=timeStart+fld_response_time.getValueI();
+      sensingInsideTime=millis()+int(fld_response_time.getValueI()*0.80);
       runLoop=true;
       feedIt=false;
       touchedPoke=false;
@@ -201,7 +202,7 @@ void doExperiment() {
           chain.append(","+(millis()-timeStart)+",0,1,ok");
           feedIt=true;
           touchedPoke=true;
-        }else if(ardu.digitalRead(inSensor)==Arduino.HIGH){
+        }else if((ardu.digitalRead(inSensor)==Arduino.HIGH)&&(millis()>=sensingInsideTime)){
           if(feedIt){
             numOk++;
             closeDoor();

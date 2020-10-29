@@ -138,7 +138,7 @@ void addWindowInfo(){
 //Experiment specific functions
 
 boolean checkFields() {
-  boolean test;
+
   if ((fld_time.getValueI() != 0)||
   (fld_response_time.getValueI() != 0) || 
   (fld_repeats.getValueI()!=0) || 
@@ -208,7 +208,6 @@ void startExperiment() {
       boolean feedIt;
       boolean touchedPoke;
       String whichPoke="none";
-      boolean timed_out;
       String status="null";
       feedIt=false;
       touchedPoke=false;
@@ -217,6 +216,7 @@ void startExperiment() {
       vibrate(freq,vibr_dur);
       timeStart=millis();
       timeStop=timeStart+fld_response_time.getValueI()+door_time;
+      sensingInsideTime=millis()+int(fld_response_time.getValueI()*0.80);
       delay(door_time);
       openDoor();
       runLoop=true;
@@ -253,7 +253,7 @@ void startExperiment() {
           }else if(freq==20){
             status="failed";
           }
-        }else if(ardu.digitalRead(inSensor)==Arduino.HIGH){
+        }else if((ardu.digitalRead(inSensor)==Arduino.HIGH)&&(millis()>=sensingInsideTime)){
           insideTime=millis()-timeStart-door_time;
           println("RUN: in!");
           closeDoor();

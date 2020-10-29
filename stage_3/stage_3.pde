@@ -35,6 +35,7 @@ int waitForNextExperiment;
 int repeats;
 int pokeTime;
 int insideTime;
+int sensingInsideTime;
 String filename;
 
 
@@ -50,7 +51,7 @@ public void setup(){
 }
 
 public void draw(){
-  lst_port.setItems(Arduino.list(), 0);
+  
   background(230);
 }
 
@@ -64,6 +65,6 @@ public void customGUI(){
  fld_time_experiments.setNumericType(G4P.INTEGER);
  fld_freq.setNumeric(1,40,20);
  fld_freq.setNumericType(G4P.INTEGER);
- fld_time_vibrations.setNumericType(G4P.INTEGER);
+
  btn_stop.setVisible(false);
 }

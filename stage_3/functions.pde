@@ -79,10 +79,7 @@ void feed()
 
 void vibrate(int ifreq, int iduration)
 {
-  if((ifreq<1)||(ifreq>40)){
-    println("ERROR: frequency not allowed!");
-    return;
-  }
+
   println("RUN:freq "+ifreq+",dur "+iduration);
   if (ifreq > 0)
   {
@@ -112,7 +109,7 @@ void openDataFolder() {
 
 void writeTableHeader(String flname)
 {
-  appendTextToFile(flname, "repeat,freq1,freq2,poke_time,touched_poke,inside_time,status");
+  appendTextToFile(flname, "repeat,freq,poke_time,touched_poke,inside_time,status");
 }
 
 void writeSeparator(String flname)
@@ -222,6 +219,7 @@ void startExperiment() {
       vibrate(freq,vibr_dur);
       timeStart=millis();
       timeStop=timeStart+fld_response_time.getValueI()+door_time;
+      sensingInsideTime=millis()+int(fld_response_time.getValueI()*0.80);
       delay(door_time);
       openDoor();
       runLoop=true;
@@ -257,7 +255,7 @@ void startExperiment() {
           }else if(freq>=20){
             status="failed";
           }
-        }else if(ardu.digitalRead(inSensor)==Arduino.HIGH){
+        }else if((ardu.digitalRead(inSensor)==Arduino.HIGH)&&(millis()>=sensingInsideTime)){
           insideTime=millis()-timeStart-door_time;
           println("RUN: in!");
           closeDoor();

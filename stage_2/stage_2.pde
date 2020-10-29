@@ -17,9 +17,10 @@ int inSensor = 2;
 boolean runLoop;
 boolean runExperiment=false;
 boolean abortExperiment=false;
+int sensingInsideTime;
 int port = 0;
 int timeFeed = 5;
-int closeAngle = 40;
+int closeAngle = 45;
 int openAngle = 85;
 int doorDelay = 15;
 int numOk = 0;
@@ -50,7 +51,6 @@ public void setup(){
 }
 
 public void draw(){
-  lst_port.setItems(Arduino.list(), 0);
   background(230);
 }
 

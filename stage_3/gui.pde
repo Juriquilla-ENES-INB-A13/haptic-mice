@@ -85,7 +85,6 @@ public void createGUI(){
   lbl_experiment_name.setText("Experiment name:");
   lbl_experiment_name.setOpaque(false);
   fld_time = new GTextField(this, 510, 60, 90, 20, G4P.SCROLLBARS_NONE);
-  fld_time.setText("500");
   fld_time.setOpaque(true);
   fld_door_time = new GTextField(this, 170, 160, 90, 20, G4P.SCROLLBARS_NONE);
   fld_door_time.setOpaque(true);
@@ -109,7 +108,7 @@ public void createGUI(){
   fld_response_time = new GTextField(this, 170, 200, 90, 20, G4P.SCROLLBARS_NONE);
   fld_response_time.setOpaque(true);
   lst_port = new GDropList(this, 180, 20, 110, 80, 3, 10);
-  lst_port.setItems(loadStrings("list_869471"), 0);
+  lst_port.setItems(Arduino.list(), 0);
   lbl_port = new GLabel(this, 100, 20, 80, 20);
   lbl_port.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
   lbl_port.setText("port:");
@@ -133,7 +132,7 @@ public void createGUI(){
   btn_vibrate.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
   btn_vibrate.addEventHandler(this, "btn_vibr_click");
   fld_freqs = new GTextField(this, 140, 60, 270, 20, G4P.SCROLLBARS_NONE);
-  fld_freqs.setText("2,5,10,25,30,35,40");
+  fld_freqs.setText("2,5,10,20,25,30,35,40");
   fld_freqs.setPromptText("Insert frequencies separated by ,");
   fld_freqs.setOpaque(true);
   lbl_freqs = new GLabel(this, 10, 60, 130, 20);
@@ -145,15 +144,7 @@ public void createGUI(){
   lbl_freq1.setText("Freq(Hz):");
   lbl_freq1.setOpaque(false);
   fld_freq = new GTextField(this, 470, 100, 40, 20, G4P.SCROLLBARS_NONE);
-  fld_freq.setText("20");
   fld_freq.setOpaque(true);
-  lbl_time_vibrations = new GLabel(this, 20, 100, 140, 40);
-  lbl_time_vibrations.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
-  lbl_time_vibrations.setText("time between vibrations (ms):");
-  lbl_time_vibrations.setOpaque(false);
-  fld_time_vibrations = new GTextField(this, 160, 120, 100, 20, G4P.SCROLLBARS_NONE);
-  fld_time_vibrations.setText("500");
-  fld_time_vibrations.setOpaque(true);
 }
 
 // Variable declarations 
@@ -184,5 +175,3 @@ GTextField fld_freqs;
 GLabel lbl_freqs; 
 GLabel lbl_freq1; 
 GTextField fld_freq; 
-GLabel lbl_time_vibrations; 
-GTextField fld_time_vibrations; 
