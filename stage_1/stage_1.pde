@@ -16,7 +16,7 @@ int inSensor = 2;
 int port = 0;
 
 //Other variables
-int timeFeed = 5;
+int timeFeed = 2;
 int closeAngle = 40;
 int openAngle = 85;
 int doorDelay = 15;
