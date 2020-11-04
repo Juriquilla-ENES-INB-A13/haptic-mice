@@ -68,13 +68,14 @@ void fill()
 void feed()
 {
   println("RUN: feed");
-  ardu.digitalWrite(pump, Arduino.HIGH);
-  delay(timeFeed);
-  ardu.digitalWrite(pump, Arduino.LOW);
-  delay(10);
-  ardu.digitalWrite(pump, Arduino.HIGH);
-  delay(timeFeed);
-  ardu.digitalWrite(pump, Arduino.LOW);
+  int cycles=4;
+  while(cycles>=0){
+    ardu.digitalWrite(pump, Arduino.HIGH);
+    delay(timeFeed);
+    ardu.digitalWrite(pump, Arduino.LOW);
+    delay(10);
+    cycles--;
+  }
 }
 
 void vibrate(int ifreq, int iduration)
