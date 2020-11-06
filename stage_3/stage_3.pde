@@ -18,7 +18,7 @@ boolean runLoop;
 boolean runExperiment=false;
 boolean abortExperiment=false;
 int port = 0;
-int timeFeed = 5;
+int timeFeed = 2;
 int closeAngle = 40;
 int openAngle = 85;
 int doorDelay = 15;

@@ -1,4 +1,5 @@
 # haptic-mice
 
-Software for controlling SkinnerDuino shield for training rodents
+A set of different programs to train rodents usging SkinnerDuino shield
+
 
