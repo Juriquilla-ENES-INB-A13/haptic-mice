@@ -8,12 +8,7 @@ import processing.serial.*;
 
 //connections
 int vibr = 3;
-int pump = 5;
-int pokeL = 8;
-int pokeR = 7;
-int door = 4;
-int inSensor = 2;
-int port = 0;
+int vibr2 = 2;
 
 //Other variables
 int timeFeed = 2;
