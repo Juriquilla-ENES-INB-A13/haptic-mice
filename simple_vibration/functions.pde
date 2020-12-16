@@ -8,7 +8,6 @@ void setArduino(){
   ardu = new Arduino(this, Arduino.list()[lst_port.getSelectedIndex()], 57600);
   ardu.pinMode(vibr, Arduino.OUTPUT);
   ardu.pinMode(vibr2,Arduino.OUTPUT);
-  ardu.servoWrite(door,closeAngle);
   //This make arduino signal an ok connection
   delay(1000);
   ardu.digitalWrite(10,Arduino.HIGH);
