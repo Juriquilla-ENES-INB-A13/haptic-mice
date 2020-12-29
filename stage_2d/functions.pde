@@ -68,19 +68,42 @@ void fill()
 void feed()
 {
   println("RUN: feed");
-  int cycles=4;
+  int cycles=cycleFeed;
   while(cycles>=0){
     ardu.digitalWrite(pump, Arduino.HIGH);
     delay(timeFeed);
     ardu.digitalWrite(pump, Arduino.LOW);
-    delay(10);
+    delay(50);
     cycles--;
   }
 }
 
-void vibrate(int ifreq, int iduration)
+void vibrate20()
 {
+  int ifreq =20;
+  int iduration = fld_time.getValueI();
+  println("RUN:freq "+ifreq+",dur "+iduration);
+  if (ifreq > 0)
+  {
+    int off_time, cycles;
+    off_time = (1000/ifreq)-25;
+    cycles = (iduration/(off_time+25))-1;
+    for (int i = 0; i <= cycles; i++)
+    {
+      ardu.digitalWrite(vibr, Arduino.HIGH);
+      delay(25);
+      ardu.digitalWrite(vibr, Arduino.LOW);
+      delay(off_time);
+    }
+  } else {
+    delay(iduration);
+  }
+}
 
+void vibrate40()
+{
+  int ifreq =40;
+  int iduration = fld_time.getValueI();
   println("RUN:freq "+ifreq+",dur "+iduration);
   if (ifreq > 0)
   {
@@ -140,7 +163,7 @@ void addWindowInfo(){
 //Experiment specific functions
 
 boolean checkFields() {
-  boolean test;
+
   if ((fld_time.getValueI() != 0)||
   (fld_response_time.getValueI() != 0) || 
   (fld_repeats.getValueI()!=0) || 
@@ -178,16 +201,15 @@ void stopExperiment(){
 
 void randomizeFreq()
 {
-  String freqsList = fld_freqs.getText();
-  String[] splitedFreqs = freqsList.split(",");
-  println("RUN: "+ splitedFreqs.length+" frequencies to randomize!");
-  freq = Integer.parseInt(splitedFreqs[int(random(splitedFreqs.length))]);
- println("RUN: randomized freq:"+ freq);
+  if(int(random(2))==1){
+    freq=20;
+  }else{
+    freq=40;
+  }
 }
 
 void startExperiment() {
   runExperiment=true;
-  abortExperiment=false;
   filename = fld_name.getText()+".txt";
   vibr_dur = fld_time.getValueI();
   waitForNextExperiment=fld_time_experiments.getValueI();
@@ -195,6 +217,14 @@ void startExperiment() {
   numIteration=1;
   numOk=0;
   numFail=0;
+  okR=0;
+  okL=0;
+  okInR=0;
+  okInL=0;
+  feedIt = false;
+  touchedPoke= false;
+  whichPoke ="none";
+  status="null";
   door_time = fld_time.getValueI();
   writeParamsToFile(filename);
   writeSeparator(filename);
@@ -208,79 +238,101 @@ void startExperiment() {
         writeSeparator(filename);
         return;
       }
-      boolean feedIt;
-      boolean touchedPoke;
-      String whichPoke="none";
-      boolean timed_out;
-      String status="null";
+
+      
       feedIt=false;
       touchedPoke=false;
       addWindowInfo();
-      randomizeFreq();
-      addWindowInfo();
-      vibrate(freq,vibr_dur);
       timeStart=millis();
-      timeStop=timeStart+fld_response_time.getValueI()+door_time;
+      timeStop=timeStart+fld_response_time.getValueI()+fld_door_time.getValueI();
       sensingInsideTime=millis()+1000;
-      delay(door_time);
-      openDoor();
       runLoop=true;
-      println("RUN:iter:"+numIteration+",freq:"+freq);
+      delay(fld_door_time.getValueI());
+      openDoor();
       while(runLoop){
+      ardu.digitalWrite(pump,Arduino.LOW);
+     
+        println("RUN:iter:"+numIteration+",freq:"+freq);
         if(millis() >= timeStop){
-          numFail++;
-          closeDoor();
-          pokeTime=0;
+          if(touchedPoke==false){
+            numFail++;
+            pokeTime=0;
+            insideTime=(millis()-timeStart-door_time);
+            status="timed_out";
+            println("RUN: timed out!");
+          }
           runLoop=false;
-          insideTime=(millis()-timeStart-door_time);
-          status="timed_out";
-          println("RUN: timed out!");
         } else if((ardu.digitalRead(pokeL)==Arduino.HIGH)&&(touchedPoke == false)){
           println("RUN: left poke!");
+          freq=20;
+          addWindowInfo();
           touchedPoke=true;
-          pokeTime=millis()-timeStart;
+          pokeTime=millis()-timeStart-door_time;
           whichPoke="left";
-          if (freq<=20){
-            feedIt=true;
-            status="ok";
-          }else if(freq>20){
-            status="failed";
-          }
+          status="ok";
+          thread("vibrate20");
+          freq=20;
+          okL++;
+          feedIt=true;
         } else if((ardu.digitalRead(pokeR)==Arduino.HIGH)&&(touchedPoke == false)){
           println("RUN: right poke!");
+          freq=40;
+          addWindowInfo();
           touchedPoke=true;
           pokeTime=millis()-timeStart-door_time;
           whichPoke="right";
-          if(freq>20){
-            feedIt=true;
-            status="ok";
-          }else if(freq>=20){
-            status="failed";
-          }
+          status="ok";
+          thread("vibrate40");
+          okR++;
+          feedIt=true;
         }else if((ardu.digitalRead(inSensor)==Arduino.HIGH)&&(millis()>=sensingInsideTime)){
-          insideTime=millis()-timeStart-door_time;
+          insideTime=millis()-timeStart;
           println("RUN: in!");
           
           if(feedIt){
-            numOk++;
-            feed();  
-          }else{
-            status="failed";
-            numFail++;
+            if(whichPoke=="left"){
+            okInL++;
           }
-          runLoop=false;
+          if(whichPoke=="right"){
+            okInR++;
+          }
+            numOk++;
+            if(freq == 20){
+              for(int times=0;times<fld_feed_l.getValueI();times++){
+                feed();
+                delay(200);
+                
+              }
+            }
+            else if(freq==40){
+              for(int times=0;times<fld_feed_r.getValueI();times++){
+                feed();
+                delay(200);
+                
+              }
+            }
+          }
+          feedIt=false;
+          
         }
-        closeDoor();
         delay(10);
       }
       addWindowInfo();
       appendTextToFile(filename,numIteration+","+freq+","+pokeTime+","+whichPoke+","+insideTime+","+status);
+      closeDoor();
+      ardu.digitalWrite(vibr,Arduino.LOW);
+      ardu.servoWrite(door,door_angle);
       delay(waitForNextExperiment);
       numIteration++;
+      freq=0;
     }
     if(abortExperiment){
       appendTextToFile(filename,"ABORTED!!");
     }
+    writeSeparator(filename);
+    appendTextToFile(filename,"inR:"+okR+",inL:"+okL);
+    writeSeparator(filename);
+    appendTextToFile(filename,"fullR:"+okInR+",fullL:"+okInL);
     writeSeparator(filename);
     appendTextToFile(filename,"finished:" + day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second());
     appendTextToFile(filename,"Ok:"+numOk+",fail:"+numFail);

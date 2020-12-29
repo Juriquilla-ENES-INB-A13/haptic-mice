@@ -19,7 +19,8 @@ boolean runExperiment=false;
 boolean abortExperiment=false;
 int sensingInsideTime;
 int port = 0;
-int timeFeed = 2;
+int timeFeed = 4;
+int cyclesFeed = 1;
 int closeAngle = 45;
 int openAngle = 85;
 int doorDelay = 15;
@@ -36,6 +37,7 @@ int waitForNextExperiment;
 int repeats;
 int pokeTime;
 int insideTime;
+int okR,okL;
 String filename;
 
 

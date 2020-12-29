@@ -67,13 +67,13 @@ void fill()
 
 void feed()
 {
+  int cycles = cyclesFeed;
   println("RUN: feed");
-  int cycles=4;
   while(cycles>=0){
     ardu.digitalWrite(pump, Arduino.HIGH);
     delay(timeFeed);
     ardu.digitalWrite(pump, Arduino.LOW);
-    delay(10);
+    delay(100);
     cycles--;
   }
 }
@@ -132,7 +132,7 @@ void openDoor(){
 }
 
 void addWindowInfo(){
-  surface.setTitle("Stage 2 "+day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second()+ "  Iteration:"+numIteration+ " OK:"+numOk+" Fail:"+numFail);
+  surface.setTitle("Stage 2 "+day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second()+ "  Iteration:"+numIteration+ " OK:"+numOk+" Fail:"+numFail+" freq:"+freq);
 }
 
 
@@ -185,6 +185,8 @@ void randomizeFreq()
 }
 
 void startExperiment() {
+  okR = 0;
+  okL = 0;
   runExperiment=true;
   filename = fld_name.getText()+".txt";
   vibr_dur = fld_time.getValueI();
@@ -215,7 +217,7 @@ void startExperiment() {
       addWindowInfo();
       timeStart=millis();
       timeStop=timeStart+fld_response_time.getValueI()+door_time;
-      sensingInsideTime=millis()+int(fld_response_time.getValueI()*0.80);
+      sensingInsideTime=millis()+1000;
       openDoor();
       runLoop=true;
       while(runLoop){
@@ -230,28 +232,35 @@ void startExperiment() {
           println("RUN: timed out!");
         } else if((ardu.digitalRead(pokeL)==Arduino.HIGH)&&(touchedPoke == false)){
           println("RUN: left poke!");
+          freq=20;
+          addWindowInfo();
           touchedPoke=true;
           pokeTime=millis()-timeStart;
           whichPoke="left";
           status="ok";
           vibrate(20,fld_time.getValueI());
+          okL++;
+          freq=20;
+          feedIt=true;
         } else if((ardu.digitalRead(pokeR)==Arduino.HIGH)&&(touchedPoke == false)){
           println("RUN: right poke!");
+          freq=40;
+          addWindowInfo();
           touchedPoke=true;
           pokeTime=millis()-timeStart-door_time;
           whichPoke="right";
           status="ok";
+          okR++;
           vibrate(40,fld_time.getValueI());
+          feedIt=true;
         }else if((ardu.digitalRead(inSensor)==Arduino.HIGH)&&(millis()>=sensingInsideTime)){
           insideTime=millis()-timeStart-door_time;
           println("RUN: in!");
-          closeDoor();
           if(feedIt){
             numOk++;
             feed();  
-          }else{
-            numFail++;
           }
+          closeDoor();
           runLoop=false;
         }
         delay(10);
@@ -264,6 +273,8 @@ void startExperiment() {
     if(abortExperiment){
       appendTextToFile(filename,"ABORTED!!");
     }
+    writeSeparator(filename);
+    appendTextToFile(filename,"okR:"+okR+",okL"+okL);
     writeSeparator(filename);
     appendTextToFile(filename,"finished:" + day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second());
     appendTextToFile(filename,"Ok:"+numOk+",fail:"+numFail);

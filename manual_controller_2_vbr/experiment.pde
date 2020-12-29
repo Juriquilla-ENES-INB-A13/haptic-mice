@@ -1,16 +1,6 @@
-void timedFeed()
+void vibrate20() //<>//
 {
-  println("RUN: delayed feed: "+fld_wait_to_feed.getValueI());
-  delay(fld_wait_to_feed.getValueI());
-  for(int i = 0;i<timesFeed;i++){
-    feed();
-    delay(50);
-  }
-}
-
-void vibrate20()
-{
-  int ifreq =20;
+  int ifreq= 20;
   int iduration = fldVibrDur.getValueI();
   println("RUN:freq "+ifreq+",dur "+iduration);
   if (ifreq > 0)
@@ -32,7 +22,7 @@ void vibrate20()
 
 void vibrate40()
 {
-  int ifreq =40;
+  int ifreq=40;
   int iduration = fldVibrDur.getValueI();
   println("RUN:freq "+ifreq+",dur "+iduration);
   if (ifreq > 0)
@@ -52,6 +42,19 @@ void vibrate40()
   }
 }
 
+void timedFeed()
+{
+  int delayedFeed=fld_wait_to_feed.getValueI();
+  println("RUN: delayed feed: "+fld_wait_to_feed.getValueI());
+  delay(delayedFeed);
+  for(int i = 0;i<timesFeed;i++){
+    feed();
+    ardu.digitalWrite(pump,Arduino.LOW);
+    delay(50);
+    
+  }
+}
+
 void startExperiment() {
   filename = fld_name.getText()+".txt";
   numOk=0;
@@ -65,7 +68,7 @@ void startExperiment() {
   writeParamsToFile(filename);
   writeSeparator(filename);
   runExperiment=true;
-  while(runExperiment){ //<>//
+  while(runExperiment){
     whichPoke ="none";
     status="null";
     timesFeed=0;
@@ -112,6 +115,7 @@ void startExperiment() {
           status="ok";
           appendTextToFile(filename,iteration+","+insideTime+","+whichPoke+","+status);
           runLoop=false;
+          addWindowInfo();
           //break;
         }
       }
@@ -145,7 +149,7 @@ void startExperiment() {
         }
         if((ardu.digitalRead(inSensor)==Arduino.HIGH)&&(millis()>insideWait)){
           insideTime=millis()-timeStart;
-          timesFeed=fld_feed_l.getValueI();
+          timesFeed=fld_feed_r.getValueI();
           timedFeed();
           okInR++;
           numOk++;
@@ -155,6 +159,7 @@ void startExperiment() {
           //break;
         }
         addWindowInfo();
+        redraw();
       }
       
       runLoop=false;

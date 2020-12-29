@@ -78,8 +78,8 @@ public void customGUI(){
  fld_pump_pulse.setNumericType(G4P.INTEGER);
  fld_pump_pulse.setText(Integer.toString(timeFeed));
  fld_inside_time.setNumericType(G4P.INTEGER);
+ fld_inside_time.setText("500");
  fldVibrDur.setNumericType(G4P.INTEGER);
  fldVibrDur.setText("1000");
- fld_inside_time.setText("500");
  btn_stop.setVisible(false);
 }

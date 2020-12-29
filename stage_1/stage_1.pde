@@ -17,6 +17,7 @@ int port = 0;
 
 //Other variables
 int timeFeed = 2;
+int cycleFeed = 1;
 int closeAngle = 40;
 int openAngle = 85;
 int doorDelay = 15;
