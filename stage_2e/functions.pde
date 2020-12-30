@@ -189,6 +189,13 @@ void randomizeFreq()
   }
 }
 
+void vibrate20(){
+  vibrate(20,fld_time.getValueI());
+}
+
+void vibrate40(){
+  vibrate(40,fld_time.getValueI());
+}
 void startExperiment() {
   runExperiment=true;
   filename = fld_name.getText()+".txt";
@@ -223,12 +230,16 @@ void startExperiment() {
       touchedPoke=false;
       addWindowInfo();
       randomizeFreq();
-      vibrate(freq,vibr_dur);
+      if(freq == 20){
+        thread("vibrate20");
+      } else if(freq==40){
+        thread("vibrate40");
+      }
       addWindowInfo();
       timeStart=millis();
       timeStop=timeStart+fld_response_time.getValueI()+door_time;
       sensingInsideTime=millis()+fld_inside_time.getValueI();
-      delay(door_time/2);
+      delay(fld_time.getValueI()/2);
       thread("openDoor");
       runLoop=true;
       println("RUN:iter:"+numIteration+",freq:"+freq);
