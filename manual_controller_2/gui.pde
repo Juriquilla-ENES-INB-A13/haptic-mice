@@ -44,6 +44,14 @@ public void stop_click(GButton source, GEvent event) { //_CODE_:btn_stop:242696:
     btn_stop.setVisible(false);
 } //_CODE_:btn_stop:242696:
 
+public void btnOpenDoor_click(GButton source, GEvent event) { //_CODE_:btnOpenDoor:691123:
+  thread("openDoor");
+} //_CODE_:btnOpenDoor:691123:
+
+public void btnCloseDoor_click(GButton source, GEvent event) { //_CODE_:btnCloseDoor:922950:
+  thread("closeDoor");
+} //_CODE_:btnCloseDoor:922950:
+
 
 
 // Create all the GUI controls. 
@@ -134,6 +142,12 @@ public void createGUI(){
   label1.setOpaque(false);
   fldVibDur = new GTextField(this, 210, 50, 70, 20, G4P.SCROLLBARS_NONE);
   fldVibDur.setOpaque(true);
+  btnOpenDoor = new GButton(this, 340, 270, 80, 30);
+  btnOpenDoor.setText("Open door");
+  btnOpenDoor.addEventHandler(this, "btnOpenDoor_click");
+  btnCloseDoor = new GButton(this, 480, 270, 80, 30);
+  btnCloseDoor.setText("Close door");
+  btnCloseDoor.addEventHandler(this, "btnCloseDoor_click");
 }
 
 // Variable declarations 
@@ -163,3 +177,5 @@ GLabel lbl_inside_time;
 GTextField fld_inside_time; 
 GLabel label1; 
 GTextField fldVibDur; 
+GButton btnOpenDoor; 
+GButton btnCloseDoor; 

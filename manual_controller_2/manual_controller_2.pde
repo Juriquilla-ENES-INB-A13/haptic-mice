@@ -63,6 +63,8 @@ public void setup(){
 
 public void draw(){
   background(230);
+  addWindowInfo();
+  
 }
 
 // Use this method to add additional statements
