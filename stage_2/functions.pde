@@ -68,10 +68,10 @@ void fill()
 void feed()
 {
   println("RUN: feed");
-  int cycles=4;
+  int cycles=cycleFeed;
   while(cycles>=0){
     ardu.digitalWrite(pump, Arduino.HIGH);
-    delay(timeFeed);
+    delay(fld_pump_pulse.getValueI());
     ardu.digitalWrite(pump, Arduino.LOW);
     delay(10);
     cycles--;
@@ -127,12 +127,16 @@ void closeDoor(){
 }
 
 void openDoor(){
-  door_angle = openAngle;
-  ardu.servoWrite(door,door_angle);
+  door_angle=closeAngle;
+  while(door_angle<openAngle){
+    ardu.servoWrite(door,door_angle);
+    door_angle++;
+    delay(doorDelay);
+  }
 }
 
 void addWindowInfo(){
-  surface.setTitle("Stage 2 "+day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second()+ "  Iteration:"+numIteration+ " OK:"+numOk+" Fail:"+numFail);
+  surface.setTitle("Stage 2 "+day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second()+ "  Iteration:"+numIteration+ " OK:"+numOk+" Fail:"+numFail+" freq:"+freq);
 }
 
 
@@ -160,6 +164,7 @@ void writeParamsToFile(String flname)
   String params = new String(
     "time:"+ fld_time.getValueI() +
     " open_door:"+ fld_door_time.getValueI()+
+    "inside time:"+ fld_inside_time.getValueI()+
     " time_response:"+ fld_response_time.getValueI()+
     " repeats:"+fld_repeats.getValueI() +
     " exp_time:"+fld_time_experiments.getValueI()
@@ -193,6 +198,10 @@ void startExperiment() {
   numIteration=1;
   numOk=0;
   numFail=0;
+  pokeFullL=0;
+  pokeFullR=0;
+  pokeTouchR=0;
+  pokeTouchL=0;
   door_time = fld_time.getValueI();
   writeParamsToFile(filename);
   writeSeparator(filename);
@@ -215,15 +224,16 @@ void startExperiment() {
       addWindowInfo();
       randomizeFreq();
       vibrate(freq,vibr_dur);
+      addWindowInfo();
       timeStart=millis();
       timeStop=timeStart+fld_response_time.getValueI()+door_time;
-      sensingInsideTime=millis()+int(fld_response_time.getValueI()*0.80);
+      sensingInsideTime=millis()+fld_inside_time.getValueI();
       delay(door_time);
       openDoor();
       runLoop=true;
       println("RUN:iter:"+numIteration+",freq:"+freq);
+
       while(runLoop){
-        //println(ardu.digitalRead(ardu.digitalRead(pokeL)+ardu.digitalRead(pokeR)+ardu.digitalRead(inSensor)));
         if(millis() >= timeStop){
           numFail++;
           closeDoor();
@@ -237,6 +247,7 @@ void startExperiment() {
           touchedPoke=true;
           pokeTime=millis()-timeStart;
           whichPoke="left";
+          pokeTouchL++;
           if (freq==20){
             feedIt=true;
             status="ok";
@@ -248,6 +259,7 @@ void startExperiment() {
           touchedPoke=true;
           pokeTime=millis()-timeStart-door_time;
           whichPoke="right";
+          pokeTouchR++;
           if(freq==40){
             feedIt=true;
             status="ok";
@@ -257,13 +269,18 @@ void startExperiment() {
         }else if((ardu.digitalRead(inSensor)==Arduino.HIGH)&&(millis()>=sensingInsideTime)){
           insideTime=millis()-timeStart-door_time;
           println("RUN: in!");
-          closeDoor();
           if(feedIt){
+            if(whichPoke=="right"){
+              pokeFullR++;
+            } else if(whichPoke=="left"){
+              pokeFullL++;
+            }
             numOk++;
             feed();  
           }else{
             numFail++;
           }
+          closeDoor();
           runLoop=false;
         }
         delay(10);
@@ -278,6 +295,8 @@ void startExperiment() {
     }
     writeSeparator(filename);
     appendTextToFile(filename,"finished:" + day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second());
+    appendTextToFile(filename,"touchedL:"+pokeTouchL+"touchedR:"+pokeTouchR);
+    appendTextToFile(filename,"FullL:"+pokeFullL+",FullR:"+pokeFullR);
     appendTextToFile(filename,"Ok:"+numOk+",fail:"+numFail);
     writeSeparator(filename);
     writeSeparator(filename);

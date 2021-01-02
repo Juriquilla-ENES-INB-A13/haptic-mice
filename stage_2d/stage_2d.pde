@@ -17,9 +17,11 @@ int inSensor = 2;
 boolean runLoop;
 boolean runExperiment=false;
 boolean abortExperiment=false;
+int sensingInsideTime;
 int port = 0;
-int timeFeed = 3;
-int closeAngle = 40;
+int timeFeed = 5;
+int cycleFeed = 0;
+int closeAngle = 45;
 int openAngle = 85;
 int doorDelay = 15;
 int numOk = 0;
@@ -35,8 +37,15 @@ int waitForNextExperiment;
 int repeats;
 int pokeTime;
 int insideTime;
-int sensingInsideTime;
+int okInR;
+int okInL;
+int okR;
+int okL;
 String filename;
+boolean feedIt;
+boolean touchedPoke;
+String whichPoke="none";
+String status="null";
 
 
 
@@ -51,7 +60,6 @@ public void setup(){
 }
 
 public void draw(){
-  
   background(230);
 }
 
@@ -62,9 +70,8 @@ public void customGUI(){
  fld_door_time.setNumericType(G4P.INTEGER);
  fld_response_time.setNumericType(G4P.INTEGER);
  fld_repeats.setNumericType(G4P.INTEGER); 
- fld_time_experiments.setNumericType(G4P.INTEGER);
- fld_freq.setNumeric(1,40,20);
- fld_freq.setNumericType(G4P.INTEGER);
-
+ fld_time_experiments.setNumericType(G4P.INTEGER); 
+ fld_feed_r.setNumericType(G4P.INTEGER);
+ fld_feed_l.setNumericType(G4P.INTEGER);
  btn_stop.setVisible(false);
 }

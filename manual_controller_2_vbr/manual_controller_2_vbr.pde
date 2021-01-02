@@ -7,7 +7,6 @@ import org.firmata.*;
 import processing.serial.*;
 
 //connections
-
 int vibr = 3;
 int pump = 5;
 int pokeL = 8;
@@ -17,9 +16,11 @@ int inSensor = 2;
 boolean runLoop;
 boolean runExperiment=false;
 boolean abortExperiment=false;
+int sensingInsideTime;
 int port = 0;
-int timeFeed = 3;
-int closeAngle = 40;
+int timeFeed = 5;
+int cycleFeed = 0;
+int closeAngle = 45;
 int openAngle = 85;
 int doorDelay = 15;
 int numOk = 0;
@@ -35,9 +36,19 @@ int waitForNextExperiment;
 int repeats;
 int pokeTime;
 int insideTime;
-int sensingInsideTime;
+int okInR;
+int okInL;
+int okR;
+int okL;
+int insideWait;
+int timesFeed;
+int iteration;
 String filename;
-
+boolean feedIt;
+boolean touchedPoke;
+boolean feeding=false;
+String whichPoke="none";
+String status="null";
 
 
 //objects
@@ -51,20 +62,24 @@ public void setup(){
 }
 
 public void draw(){
-  
   background(230);
 }
 
 // Use this method to add additional statements
 // to customise the GUI controls
 public void customGUI(){
- fld_time.setNumericType(G4P.INTEGER); 
- fld_door_time.setNumericType(G4P.INTEGER);
- fld_response_time.setNumericType(G4P.INTEGER);
- fld_repeats.setNumericType(G4P.INTEGER); 
- fld_time_experiments.setNumericType(G4P.INTEGER);
- fld_freq.setNumeric(1,40,20);
- fld_freq.setNumericType(G4P.INTEGER);
+  
 
+ fld_response_time.setNumericType(G4P.INTEGER);
+ fld_feed_r.setNumericType(G4P.INTEGER);
+ fld_feed_l.setNumericType(G4P.INTEGER);
+ fld_wait_to_feed.setNumericType(G4P.INTEGER);
+ fld_wait_to_feed.setText("0");
+ fld_pump_pulse.setNumericType(G4P.INTEGER);
+ fld_pump_pulse.setText(Integer.toString(timeFeed));
+ fld_inside_time.setNumericType(G4P.INTEGER);
+ fld_inside_time.setText("500");
+ fldVibrDur.setNumericType(G4P.INTEGER);
+ fldVibrDur.setText("1000");
  btn_stop.setVisible(false);
 }

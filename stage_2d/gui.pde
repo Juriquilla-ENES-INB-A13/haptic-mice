@@ -36,12 +36,12 @@ public void setPort_click(GButton source, GEvent event) { //_CODE_:btn_setPort:3
 
 public void btn_20hz_click(GButton source, GEvent event) { //_CODE_:btn_20hz:652578:
   if(checkFields()){
-    vibrate(20,fld_time.getValueI());
+    thread("vibrate20");
   }
 } //_CODE_:btn_20hz:652578:
 
 public void feed_click(GButton source, GEvent event) { //_CODE_:btn_feed:628575:
-  feed();
+thread("feed");
 } //_CODE_:btn_feed:628575:
 
 public void stop_click(GButton source, GEvent event) { //_CODE_:btn_stop:242696:
@@ -52,7 +52,7 @@ public void stop_click(GButton source, GEvent event) { //_CODE_:btn_stop:242696:
 
 public void btn_40hz_click(GButton source, GEvent event) { //_CODE_:btn_40hz:332202:
   if(checkFields()){
-    vibrate(40,fld_time.getValueI());
+    thread("vibrate40");
   }
 } //_CODE_:btn_40hz:332202:
 
@@ -64,16 +64,16 @@ public void createGUI(){
   G4P.messagesEnabled(false);
   G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
   G4P.setMouseOverEnabled(false);
-  surface.setTitle("Haptic Mice - Stage 2");
-  lbl_dur1 = new GLabel(this, 90, 60, 90, 20);
+  surface.setTitle("Haptic Mice - Stage 2D");
+  lbl_dur1 = new GLabel(this, 90, 70, 90, 20);
   lbl_dur1.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
-  lbl_dur1.setText("duration {ms):");
+  lbl_dur1.setText("duration (ms):");
   lbl_dur1.setOpaque(false);
-  lbl_open_door = new GLabel(this, 40, 140, 140, 20);
+  lbl_open_door = new GLabel(this, 40, 120, 140, 20);
   lbl_open_door.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
   lbl_open_door.setText("time to open door(ms):");
   lbl_open_door.setOpaque(false);
-  lbl_time_response = new GLabel(this, 40, 180, 140, 20);
+  lbl_time_response = new GLabel(this, 40, 170, 140, 20);
   lbl_time_response.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   lbl_time_response.setText("time to response(ms):");
   lbl_time_response.setOpaque(false);
@@ -89,9 +89,9 @@ public void createGUI(){
   lbl_experiment_name.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
   lbl_experiment_name.setText("Experiment name:");
   lbl_experiment_name.setOpaque(false);
-  fld_time = new GTextField(this, 180, 60, 90, 20, G4P.SCROLLBARS_NONE);
+  fld_time = new GTextField(this, 180, 70, 90, 20, G4P.SCROLLBARS_NONE);
   fld_time.setOpaque(true);
-  fld_door_time = new GTextField(this, 180, 140, 90, 20, G4P.SCROLLBARS_NONE);
+  fld_door_time = new GTextField(this, 180, 120, 90, 20, G4P.SCROLLBARS_NONE);
   fld_door_time.setOpaque(true);
   fld_repeats = new GTextField(this, 180, 220, 90, 20, G4P.SCROLLBARS_NONE);
   fld_repeats.setOpaque(true);
@@ -110,7 +110,7 @@ public void createGUI(){
   btn_open = new GButton(this, 380, 360, 140, 30);
   btn_open.setText("Open data folder");
   btn_open.addEventHandler(this, "open_click");
-  fld_response_time = new GTextField(this, 180, 180, 90, 20, G4P.SCROLLBARS_NONE);
+  fld_response_time = new GTextField(this, 180, 170, 90, 20, G4P.SCROLLBARS_NONE);
   fld_response_time.setOpaque(true);
   lst_port = new GDropList(this, 180, 20, 110, 80, 3, 10);
   lst_port.setItems(Arduino.list(), 0);
@@ -140,18 +140,20 @@ public void createGUI(){
   btn_40hz.setText("40Hz");
   btn_40hz.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
   btn_40hz.addEventHandler(this, "btn_40hz_click");
-  lbl_inside_time = new GLabel(this, 80, 100, 100, 20);
-  lbl_inside_time.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
-  lbl_inside_time.setText("Inside time (ms)");
-  lbl_inside_time.setOpaque(false);
-  fld_inside_time = new GTextField(this, 180, 100, 90, 20, G4P.SCROLLBARS_NONE);
-  fld_inside_time.setOpaque(true);
-  lbl_pump_pulse = new GLabel(this, 300, 60, 120, 20);
-  lbl_pump_pulse.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
-  lbl_pump_pulse.setText("Pump pulse (ms)");
-  lbl_pump_pulse.setOpaque(false);
-  fld_pump_pulse = new GTextField(this, 420, 60, 50, 20, G4P.SCROLLBARS_NONE);
-  fld_pump_pulse.setOpaque(true);
+  fld_feed_l = new GTextField(this, 380, 120, 50, 20, G4P.SCROLLBARS_NONE);
+  fld_feed_l.setText("1");
+  fld_feed_l.setOpaque(true);
+  lbl_feed_l = new GLabel(this, 340, 120, 40, 20);
+  lbl_feed_l.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
+  lbl_feed_l.setText("L:");
+  lbl_feed_l.setOpaque(false);
+  lbl_feed_r = new GLabel(this, 470, 120, 40, 20);
+  lbl_feed_r.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
+  lbl_feed_r.setText("R:");
+  lbl_feed_r.setOpaque(false);
+  fld_feed_r = new GTextField(this, 510, 120, 50, 20, G4P.SCROLLBARS_NONE);
+  fld_feed_r.setText("1");
+  fld_feed_r.setOpaque(true);
 }
 
 // Variable declarations 
@@ -179,7 +181,7 @@ GButton btn_20hz;
 GButton btn_feed; 
 GButton btn_stop; 
 GButton btn_40hz; 
-GLabel lbl_inside_time; 
-GTextField fld_inside_time; 
-GLabel lbl_pump_pulse; 
-GTextField fld_pump_pulse; 
+GTextField fld_feed_l; 
+GLabel lbl_feed_l; 
+GLabel lbl_feed_r; 
+GTextField fld_feed_r; 

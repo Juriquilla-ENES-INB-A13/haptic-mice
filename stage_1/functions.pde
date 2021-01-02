@@ -73,12 +73,12 @@ void fill()
 void feed()
 {
   println("RUN: feed");
-  int cycles=4;
+  int cycles = cycleFeed;
   while(cycles>=0){
     ardu.digitalWrite(pump, Arduino.HIGH);
     delay(timeFeed);
     ardu.digitalWrite(pump, Arduino.LOW);
-    delay(10);
+    delay(50);
     cycles--;
   }
 }
@@ -185,7 +185,7 @@ void doExperiment() {
       openDoor();
       int timeStart=millis();
       int timeStop=timeStart+fld_response_time.getValueI();
-      sensingInsideTime=millis()+int(fld_response_time.getValueI()*0.80);
+      sensingInsideTime=millis()+1000;
       runLoop=true;
       feedIt=false;
       touchedPoke=false;
@@ -207,8 +207,8 @@ void doExperiment() {
         }else if((ardu.digitalRead(inSensor)==Arduino.HIGH)&&(millis()>=sensingInsideTime)){
           if(feedIt){
             numOk++;
-            closeDoor();
             feed();
+            closeDoor();
             runLoop=false;
           }
         }

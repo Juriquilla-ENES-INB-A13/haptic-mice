@@ -68,12 +68,12 @@ void fill()
 void feed()
 {
   println("RUN: feed");
-  int cycles=4;
+  int cycles=cycleFeed;
   while(cycles>=0){
     ardu.digitalWrite(pump, Arduino.HIGH);
     delay(timeFeed);
     ardu.digitalWrite(pump, Arduino.LOW);
-    delay(10);
+    delay(100);
     cycles--;
   }
 }
@@ -132,7 +132,7 @@ void openDoor(){
 }
 
 void addWindowInfo(){
-  surface.setTitle("Stage 2 "+day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second()+ "  Iteration:"+numIteration+ " OK:"+numOk+" Fail:"+numFail);
+  surface.setTitle("Stage 2 "+day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second()+ "  Iteration:"+numIteration+ " OK:"+numOk+" Fail:"+numFail+" freq:"+ freq);
 }
 
 
@@ -225,10 +225,11 @@ void startExperiment() {
       touchedPoke=false;
       addWindowInfo();
       randomizeFreq();
+      addWindowInfo();
       vibrate(freq,vibr_dur);
       timeStart=millis();
       timeStop=timeStart+fld_response_time.getValueI()+door_time;
-      sensingInsideTime=millis()+int(fld_response_time.getValueI()*0.80);
+      sensingInsideTime=millis()+1000;
       delay(door_time);
       openDoor();
       runLoop=true;
@@ -268,13 +269,14 @@ void startExperiment() {
         }else if((ardu.digitalRead(inSensor)==Arduino.HIGH)&&(millis()>=sensingInsideTime)){
           insideTime=millis()-timeStart-door_time;
           println("RUN: in!");
-          closeDoor();
+          
           if(feedIt){
             numOk++;
             feed();  
           }else{
             numFail++;
           }
+          closeDoor();
           runLoop=false;
         }
         delay(10);
