@@ -26,6 +26,8 @@ void startExperiment() { //<>//
   writeSeparator(filename);
   runExperiment=true;
   abortExperiment=false;
+  thread("openDoor");
+  println("RUN: Starting experiment");
   while(runExperiment){
     if(abortExperiment){
       println("RUN:Stopping!");
@@ -34,9 +36,8 @@ void startExperiment() { //<>//
       writeSeparator(filename);
       writeSeparator(filename);
       runExperiment=false;
-      return;
+      break;
     }
-    thread("openDoor");
     if(ardu.digitalRead(pokeL)==Arduino.HIGH){
       println("Starting L");
       whichPoke="left";
@@ -70,8 +71,7 @@ void startExperiment() { //<>//
           break;
         }
       }
-    }
-    if(ardu.digitalRead(pokeR)==Arduino.HIGH){
+    }else  if(ardu.digitalRead(pokeR)==Arduino.HIGH){
       println("Starting R");
       whichPoke="right";
       runLoop=true;
@@ -105,7 +105,9 @@ void startExperiment() { //<>//
         }
       }
     }
+    delay(50);
   }
+  
   writeSeparator(filename);
   appendTextToFile(filename,"inR:"+okR+",inL:"+okL);
   writeSeparator(filename);

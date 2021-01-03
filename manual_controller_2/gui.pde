@@ -19,11 +19,15 @@ public void fill_click(GButton source, GEvent event) { //_CODE_:btn_fill:241519:
 } //_CODE_:btn_fill:241519:
 
 public void start_click1(GButton source, GEvent event) { //_CODE_:btn_start:428180:
-  if(checkFields()&& !runExperiment){
+  if(runExperiment==false){
+    runExperiment =true;
+    abortExperiment=false;
     btn_start.setVisible(false);
     btn_stop.setVisible(true);
     thread("startExperiment");
+
   }
+
 } //_CODE_:btn_start:428180:
 
 public void open_click(GButton source, GEvent event) { //_CODE_:btn_open:719474:
@@ -41,7 +45,7 @@ thread("feed");
 public void stop_click(GButton source, GEvent event) { //_CODE_:btn_stop:242696:
   stopExperiment();
   btn_start.setVisible(true);
-    btn_stop.setVisible(false);
+  btn_stop.setVisible(false);
 } //_CODE_:btn_stop:242696:
 
 public void btnOpenDoor_click(GButton source, GEvent event) { //_CODE_:btnOpenDoor:691123:

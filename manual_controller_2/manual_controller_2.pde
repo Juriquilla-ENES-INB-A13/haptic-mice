@@ -70,8 +70,8 @@ public void draw(){
 // Use this method to add additional statements
 // to customise the GUI controls
 public void customGUI(){
-  
-
+  fld_response_time.setText("3000");
+  fld_name.setText("test");
  fld_response_time.setNumericType(G4P.INTEGER);
  fld_feed_r.setNumericType(G4P.INTEGER);
  fld_feed_l.setNumericType(G4P.INTEGER);
