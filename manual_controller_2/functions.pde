@@ -144,6 +144,8 @@ void writeParamsToFile(String flname)
 void stopExperiment(){
   runLoop=false;
   runExperiment=false;
+  abortExperiment=true;
+  thread("closeDoor");
 }
 
 void randomizeFreq()
