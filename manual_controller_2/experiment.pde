@@ -22,7 +22,7 @@ void startExperiment() { //<>//
   okL=0;
   feedIt = false;
   iteration=0;
-  openDoorDelay=fldTimeExperiments.getValueI();
+  openDoorDelay=fldTimeExperiments.getValueI()+1000;
   writeParamsToFile(filename);
   writeSeparator(filename);
   runExperiment=true;
@@ -30,6 +30,7 @@ void startExperiment() { //<>//
   thread("openDoor");
   println("RUN: Starting experiment");
   while(runExperiment){
+    println(openDoorDelay);
     if(abortExperiment){
       println("RUN:Stopping!");
       writeSeparator(filename);
