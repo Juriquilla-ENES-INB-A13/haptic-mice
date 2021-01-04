@@ -51,7 +51,7 @@ String whichPoke="none";
 String status="null";
 boolean closedDoor=false;
 boolean doorWorking=false;
-int openDoorDelay=1000;
+int  openDoorDelay;
 
 //objects
 Arduino ardu;
@@ -83,7 +83,7 @@ public void customGUI(){
  fld_pump_pulse.setText(Integer.toString(timeFeed));
  fld_inside_time.setNumericType(G4P.INTEGER);
  fld_inside_time.setText("500");
- fldVibDur.setNumericType(G4P.INTEGER);
- fldVibDur.setText("1000");
+ fldTimeExperiments.setNumericType(G4P.INTEGER);
+ fldTimeExperiments.setText("1000");
  btn_stop.setVisible(false);
 }

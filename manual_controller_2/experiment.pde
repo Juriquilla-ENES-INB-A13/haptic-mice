@@ -22,6 +22,7 @@ void startExperiment() { //<>//
   okL=0;
   feedIt = false;
   iteration=0;
+  openDoorDelay=fldTimeExperiments.getValueI();
   writeParamsToFile(filename);
   writeSeparator(filename);
   runExperiment=true;
