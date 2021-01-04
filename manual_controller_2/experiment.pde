@@ -36,8 +36,10 @@ void startExperiment() { //<>//
       writeSeparator(filename);
       writeSeparator(filename);
       runExperiment=false;
+      
       break;
     }
+    openDoor();
     if(ardu.digitalRead(pokeL)==Arduino.HIGH){
       println("Starting L");
       whichPoke="left";
@@ -55,8 +57,10 @@ void startExperiment() { //<>//
           insideTime=millis()-timeStart;
           status="timed_out";
           println("RUN: timed out!");
+          closeDoor();
           appendTextToFile(filename,iteration+","+insideTime+","+whichPoke+","+status);
           runLoop=false;
+          
           break;
         }
         if((ardu.digitalRead(inSensor)==Arduino.HIGH)&&(millis()>insideWait)){
@@ -68,6 +72,7 @@ void startExperiment() { //<>//
           status="ok";
           appendTextToFile(filename,iteration+","+insideTime+","+whichPoke+","+status);
           runLoop=false;
+          closeDoor();
           break;
         }
       }
@@ -90,6 +95,7 @@ void startExperiment() { //<>//
           println("RUN: timed out!");
           appendTextToFile(filename,iteration+","+insideTime+","+whichPoke+","+status);
           runLoop=false;
+          closeDoor();
           break;
         }
         if((ardu.digitalRead(inSensor)==Arduino.HIGH)&&(millis()>insideWait)){
@@ -101,11 +107,12 @@ void startExperiment() { //<>//
           status="ok";
           appendTextToFile(filename,iteration+","+insideTime+","+whichPoke+","+status);
           runLoop=false;
+          closeDoor();
           break;
         }
       }
     }
-    delay(50);
+    delay(1000);
   }
   
   writeSeparator(filename);

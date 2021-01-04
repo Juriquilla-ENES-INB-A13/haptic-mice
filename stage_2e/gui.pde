@@ -115,7 +115,7 @@ public void createGUI(){
   fld_response_time = new GTextField(this, 180, 180, 90, 20, G4P.SCROLLBARS_NONE);
   fld_response_time.setOpaque(true);
   lst_port = new GDropList(this, 180, 20, 110, 80, 3, 10);
-  lst_port.setItems(loadStrings("list_869471"), 0);
+  lst_port.setItems(Arduino.list(), 0);
   lbl_port = new GLabel(this, 100, 20, 80, 20);
   lbl_port.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
   lbl_port.setText("port:");

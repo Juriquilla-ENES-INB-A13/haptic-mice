@@ -21,7 +21,7 @@ int port = 0;
 int timeFeed = 5;
 int cycleFeed = 0;
 int closeAngle = 45;
-int openAngle = 85;
+int openAngle = 75;
 int doorDelay = 15;
 int numOk = 0;
 int numFail = 0;
@@ -49,6 +49,8 @@ boolean touchedPoke;
 boolean feeding=false;
 String whichPoke="none";
 String status="null";
+boolean closedDoor=false;
+boolean doorWorking=false;
 
 
 //objects

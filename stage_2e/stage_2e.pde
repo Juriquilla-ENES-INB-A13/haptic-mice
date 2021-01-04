@@ -66,7 +66,7 @@ public void draw(){
 // to customise the GUI controls
 public void customGUI(){
  fld_time.setNumericType(G4P.INTEGER); 
- fld_door_time.setNumericType(G4P.INTEGER);
+ 
  fld_response_time.setNumericType(G4P.INTEGER);
  fld_repeats.setNumericType(G4P.INTEGER); 
  fld_time_experiments.setNumericType(G4P.INTEGER);

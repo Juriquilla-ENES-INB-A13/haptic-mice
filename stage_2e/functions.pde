@@ -163,7 +163,7 @@ void writeParamsToFile(String flname)
   println(datetime);
   String params = new String(
     "time:"+ fld_time.getValueI() +
-    " open_door:"+ fld_door_time.getValueI()+
+    
     "inside time:"+ fld_inside_time.getValueI()+
     " time_response:"+ fld_response_time.getValueI()+
     " repeats:"+fld_repeats.getValueI() +

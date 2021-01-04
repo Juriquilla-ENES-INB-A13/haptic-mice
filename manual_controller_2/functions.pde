@@ -14,6 +14,7 @@ void setArduino(){
   ardu.pinMode(inSensor, Arduino.INPUT);
   ardu.pinMode(10,Arduino.OUTPUT);
   ardu.servoWrite(door,closeAngle);
+  closedDoor=true;
   //This make arduino signal an ok connection
   delay(1000);
   ardu.digitalWrite(10,Arduino.HIGH);
@@ -24,6 +25,7 @@ void setArduino(){
   delay(100);
   ardu.digitalWrite(10,Arduino.LOW);
   println("INFO:success!");
+  closeDoor();
   lbl_connected.setText("connected!");
 }
 
@@ -96,17 +98,33 @@ void writeSeparator(String flname)
 }
 
 void closeDoor(){
-  ardu.pinMode(door,Arduino.SERVO);
-  while(door_angle>closeAngle){
-    ardu.servoWrite(door,door_angle);
-    door_angle--;
-    delay(doorDelay);
+  if((closedDoor==false) || (doorWorking==false)){
+    println("Closing");
+    doorWorking=true;
+    ardu.pinMode(door,Arduino.SERVO);
+    while(door_angle>closeAngle){
+      ardu.servoWrite(door,door_angle);
+      door_angle--;
+      delay(doorDelay);
+    }
+    closedDoor=true;
+    doorWorking=false;
+  }else if((closedDoor==true)||(doorWorking==true)){
+    println("Door closed or working!");
   }
 }
 
 void openDoor(){
-  door_angle = openAngle;
-  ardu.servoWrite(door,door_angle);
+  if((closedDoor==true)&&(doorWorking==false)){
+    println("Opening");
+    doorWorking=true;
+    door_angle = openAngle;
+    ardu.servoWrite(door,door_angle);
+    closedDoor=false;
+    doorWorking=false;
+  }else if((closedDoor==false)&&(doorWorking==true)){
+    println("door opened or working!");
+  }
 }
 
 void addWindowInfo(){
