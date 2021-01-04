@@ -36,10 +36,12 @@ void startExperiment() { //<>//
       writeSeparator(filename);
       writeSeparator(filename);
       runExperiment=false;
-      
       break;
     }
-    openDoor();
+    if(closedDoor){
+      openDoor();
+    }
+    //print(".");
     if(ardu.digitalRead(pokeL)==Arduino.HIGH){
       println("Starting L");
       whichPoke="left";
@@ -51,16 +53,17 @@ void startExperiment() { //<>//
       timeStop=timeStart+fld_response_time.getValueI();
       insideWait=timeStart+500;
       while(runLoop){
+        delay(50);
         if(millis() >= timeStop){
           numFail++;
           pokeTime=0;
           insideTime=millis()-timeStart;
           status="timed_out";
           println("RUN: timed out!");
-          closeDoor();
           appendTextToFile(filename,iteration+","+insideTime+","+whichPoke+","+status);
           runLoop=false;
-          
+          closeDoor();
+          delay(openDoorDelay);
           break;
         }
         if((ardu.digitalRead(inSensor)==Arduino.HIGH)&&(millis()>insideWait)){
@@ -73,6 +76,8 @@ void startExperiment() { //<>//
           appendTextToFile(filename,iteration+","+insideTime+","+whichPoke+","+status);
           runLoop=false;
           closeDoor();
+          delay(openDoorDelay);
+          println("Done ok");
           break;
         }
       }
@@ -87,6 +92,7 @@ void startExperiment() { //<>//
       timeStop=timeStart+fld_response_time.getValueI();
       insideWait=timeStart+500;
       while(runLoop){
+        delay(50);
         if(millis() >= timeStop){
           numFail++;
           pokeTime=0;
@@ -96,6 +102,7 @@ void startExperiment() { //<>//
           appendTextToFile(filename,iteration+","+insideTime+","+whichPoke+","+status);
           runLoop=false;
           closeDoor();
+          delay(openDoorDelay);
           break;
         }
         if((ardu.digitalRead(inSensor)==Arduino.HIGH)&&(millis()>insideWait)){
@@ -108,13 +115,14 @@ void startExperiment() { //<>//
           appendTextToFile(filename,iteration+","+insideTime+","+whichPoke+","+status);
           runLoop=false;
           closeDoor();
+          delay(openDoorDelay);
+          println("Done ok");
           break;
         }
       }
     }
-    delay(1000);
+    delay(50);
   }
-  
   writeSeparator(filename);
   appendTextToFile(filename,"inR:"+okR+",inL:"+okL);
   writeSeparator(filename);

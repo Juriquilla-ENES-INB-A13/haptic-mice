@@ -51,7 +51,7 @@ String whichPoke="none";
 String status="null";
 boolean closedDoor=false;
 boolean doorWorking=false;
-
+int openDoorDelay=1000;
 
 //objects
 Arduino ardu;
