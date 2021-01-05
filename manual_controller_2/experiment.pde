@@ -87,7 +87,7 @@ void startExperiment() { //<>//
       println("Starting R");
       whichPoke="right";
       runLoop=true;
-      okL++;
+      okR++;
       iteration++;
       println(iteration);
       timeStart=millis();
@@ -111,7 +111,7 @@ void startExperiment() { //<>//
           insideTime=millis()-timeStart;
           timesFeed=fld_feed_l.getValueI();
           timedFeed();
-          okInL++;
+          okInR++;
           numOk++;
           status="ok";
           appendTextToFile(filename,iteration+","+insideTime+","+whichPoke+","+status);
