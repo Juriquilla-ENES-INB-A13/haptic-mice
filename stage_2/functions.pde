@@ -227,12 +227,17 @@ void startExperiment() {
       addWindowInfo();
       timeStart=millis();
       timeStop=timeStart+fld_response_time.getValueI()+door_time;
+<<<<<<< HEAD
       sensingInsideTime=fld_inside_time.getValueI();
       sensingInsideTime*=2;
       sensingInsideTime+=millis();
       if(fld_door_time.getValueI()>=0){
         delay(fld_door_time.getValueI());
       }
+=======
+      sensingInsideTime=millis()+fld_inside_time.getValueI();
+      delay(door_time);
+>>>>>>> 2336c6798f5e3a9a51838b4bb1194e1460331b7d
       openDoor();
       runLoop=true;
       println("RUN:iter:"+numIteration+",freq:"+freq);

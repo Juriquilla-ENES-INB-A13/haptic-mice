@@ -23,9 +23,15 @@ int sensingInsideTime;
 int port = 0;
 int timeFeed = 4;
 int cycleFeed = 1;
+<<<<<<< HEAD
 int closeAngle = 27;
 int openAngle = 75;
 int doorDelay = 10;
+=======
+int closeAngle = 47;
+int openAngle = 75;
+int doorDelay = 15;
+>>>>>>> 2336c6798f5e3a9a51838b4bb1194e1460331b7d
 int numOk = 0;
 int numFail = 0;
 int numIteration = 0;
@@ -73,7 +79,10 @@ public void customGUI(){
  fld_inside_time.setText("500");
  fld_pump_pulse.setNumericType(G4P.INTEGER);
  fld_pump_pulse.setText(Integer.toString(timeFeed));
+<<<<<<< HEAD
  fldFailDoorTime.setNumericType(G4P.INTEGER);
+=======
+>>>>>>> 2336c6798f5e3a9a51838b4bb1194e1460331b7d
  
  btn_stop.setVisible(false);
 }

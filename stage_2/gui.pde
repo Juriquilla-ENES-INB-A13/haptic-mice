@@ -152,6 +152,7 @@ public void createGUI(){
   lbl_pump_pulse.setOpaque(false);
   fld_pump_pulse = new GTextField(this, 420, 60, 50, 20, G4P.SCROLLBARS_NONE);
   fld_pump_pulse.setOpaque(true);
+<<<<<<< HEAD
   lblFailedDoorTime = new GLabel(this, 0, 330, 180, 20);
   lblFailedDoorTime.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   lblFailedDoorTime.setText("If fail, door time (ms):");
@@ -159,6 +160,8 @@ public void createGUI(){
   fldFailDoorTime = new GTextField(this, 180, 330, 90, 20, G4P.SCROLLBARS_NONE);
   fldFailDoorTime.setText("3000");
   fldFailDoorTime.setOpaque(true);
+=======
+>>>>>>> 2336c6798f5e3a9a51838b4bb1194e1460331b7d
 }
 
 // Variable declarations 
@@ -190,5 +193,8 @@ GLabel lbl_inside_time;
 GTextField fld_inside_time; 
 GLabel lbl_pump_pulse; 
 GTextField fld_pump_pulse; 
+<<<<<<< HEAD
 GLabel lblFailedDoorTime; 
 GTextField fldFailDoorTime; 
+=======
+>>>>>>> 2336c6798f5e3a9a51838b4bb1194e1460331b7d
