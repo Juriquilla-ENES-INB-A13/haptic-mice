@@ -82,8 +82,9 @@ void vibrate(int ifreq, int iduration)
 {
 
   println("RUN:freq "+ifreq+",dur "+iduration);
-  if (ifreq > 0)
+  if ((ifreq > 0)&&(ifreq<41))
   {
+    println("Freq:1-40");
     int off_time, cycles;
     off_time = (1000/ifreq)-25;
     cycles = (iduration/(off_time+25))-1;
@@ -94,7 +95,23 @@ void vibrate(int ifreq, int iduration)
       ardu.digitalWrite(vibr, Arduino.LOW);
       delay(off_time);
     }
-  } else {
+  } else if((ifreq>40)&&(ifreq<120)){
+    println("freq:40-120");
+    int off_time, cycles;
+    off_time = (1000/ifreq)-12;
+    cycles = (iduration/(off_time+12))-1;
+    for (int i = 0; i <= cycles; i++)
+    {
+      ardu.digitalWrite(vibr, Arduino.HIGH);
+      delay(12);
+      ardu.digitalWrite(vibr, Arduino.LOW);
+      delay(off_time);
+    }
+  }else if(ifreq==120){
+    ardu.digitalWrite(vibr,Arduino.HIGH);
+    delay(fld_time.getValueI());
+    ardu.digitalWrite(vibr,Arduino.LOW);
+  }else{
     delay(iduration);
   }
 }
