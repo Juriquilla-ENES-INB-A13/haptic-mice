@@ -382,6 +382,8 @@ void setArduino(){
   ardu.digitalWrite(10,Arduino.LOW);
   println("INFO:success!");
   lbl_connected.setText("connected!");
+  ardu.servoWrite(door,closeAngle);
+  btn_start.setVisible(true);
 }
 
 void appendTextToFile(String filename, String text) {
@@ -425,6 +427,7 @@ void feed()
 {
   println("RUN: feed");
   int cycles=cycleFeed;
+  ardu.pinMode(pump,Arduino.OUTPUT);
   while(cycles>=0){
     ardu.digitalWrite(pump, Arduino.HIGH);
     delay(fld_pump_pulse.getValueI());
@@ -432,6 +435,7 @@ void feed()
     delay(10);
     cycles--;
   }
+  ardu.pinMode(pump,Arduino.INPUT);
 }
 
 void vibrate(int ifreq, int iduration)
@@ -474,25 +478,51 @@ void writeSeparator(String flname)
 }
 
 void closeDoor(){
-  ardu.pinMode(door,Arduino.SERVO);
-  while(door_angle>closeAngle){
-    ardu.servoWrite(door,door_angle);
-    door_angle--;
-    delay(doorDelay);
-  }
+  
+    int door_angle=openAngle;
+    println("RUN:Closing Door");
+    ardu.pinMode(door,Arduino.SERVO);
+    while(door_angle>closeAngle){
+      ardu.servoWrite(door,door_angle);
+      delay(10);
+      ardu.servoWrite(door,door_angle);
+      delay(10);
+      ardu.servoWrite(door,door_angle);
+      door_angle-=deltaDoor;
+      println(door_angle);
+      delay(doorDelay);
+    }
+    ardu.servoWrite(door,closeAngle);
+    delay(10);
+    ardu.servoWrite(door,closeAngle);
+    delay(10);
+    ardu.servoWrite(door,closeAngle);
+    closedDoor=true;
+
 }
 
 void openDoor(){
-  door_angle=closeAngle;
-  while(door_angle<openAngle){
-    ardu.servoWrite(door,door_angle);
-    door_angle++;
-    delay(doorDelay);
-  }
+  
+
+    int door_angle=closeAngle;
+    println("RUN:Open Door");
+    while(door_angle<openAngle){
+      ardu.servoWrite(door,door_angle);
+      delay(10);
+      ardu.servoWrite(door,door_angle);
+      door_angle+=deltaDoor;
+      println(door_angle);
+      delay(doorDelay);
+    }
+    closedDoor=true;
+    ardu.servoWrite(door,openAngle);
+    delay(10);
+    ardu.servoWrite(door,openAngle);
+
 }
 
 void addWindowInfo(){
-  surface.setTitle("Stage 2 "+day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second()+ "  Iteration:"+numIteration+ " OK:"+numOk+" Fail:"+numFail+" freq:"+freq);
+  surface.setTitle("Stage 2e "+day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second()+ "  Iteration:"+numIteration+ " OK:"+numOk+" Fail:"+numFail+" freq:"+freq);
 }
 
 
@@ -552,6 +582,8 @@ void vibrate20(){
 void vibrate40(){
   vibrate(40,fld_time.getValueI());
 }
+
+
 void startExperiment() {
   runExperiment=true;
   filename = fld_name.getText()+".txt";
@@ -591,16 +623,20 @@ void startExperiment() {
       } else if(freq==40){
         thread("vibrate40");
       }
+      delay(fld_time.getValueI()/2);
+      //thread("openDoor");
+      openDoor();
       addWindowInfo();
       timeStart=millis();
       timeStop=timeStart+fld_response_time.getValueI()+door_time;
       sensingInsideTime=millis()+fld_inside_time.getValueI();
-      delay(fld_time.getValueI()/2);
-      thread("openDoor");
+      //delay(fld_time.getValueI()/2);
+      
       runLoop=true;
       println("RUN:iter:"+numIteration+",freq:"+freq);
 
       while(runLoop){
+        ardu.digitalWrite(pump,Arduino.LOW);
         if(millis() >= timeStop){
           numFail++;
           closeDoor();
@@ -634,6 +670,7 @@ void startExperiment() {
             status="failed";
           }
         }else if((ardu.digitalRead(inSensor)==Arduino.HIGH)&&(millis()>=sensingInsideTime)){
+          println(sensingInsideTime);
           insideTime=millis()-timeStart-door_time;
           println("RUN: in!");
           if(feedIt){

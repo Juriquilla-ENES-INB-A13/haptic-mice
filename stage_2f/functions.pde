@@ -56,8 +56,13 @@ void createFile(File f) {
 
 void printInfo(String textLog){
   println(textLog);
+<<<<<<< HEAD
+  //taLog.appendText(textLog);
+  //appendTextToFile("log.txt",textLog);
+=======
  // taLog.appendText(textLog); //<>//
 //  appendTextToFile("log.txt",textLog); //<>//
+>>>>>>> 436475cb274d2a309731a367ff1beef70eba7c5a
 }
 
 
@@ -68,7 +73,11 @@ void fill()
   ardu.digitalWrite(pump, Arduino.HIGH);
   delay(3000);
   ardu.digitalWrite(pump, Arduino.LOW);
+<<<<<<< HEAD
+  printInfo("RUN:Done!");
+=======
   printInfo("RUN:Filling done!");
+>>>>>>> 436475cb274d2a309731a367ff1beef70eba7c5a
 }
 
 void feed()
@@ -219,7 +228,11 @@ void randomizeFreq()
   }
 }
 
+<<<<<<< HEAD
+void startExperiment() {
+=======
 void startExperiment() { //<>//
+>>>>>>> 436475cb274d2a309731a367ff1beef70eba7c5a
   int[] frequencies = makeList();
   runExperiment=true;
   filename = fld_name.getText()+".txt";

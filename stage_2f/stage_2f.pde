@@ -46,6 +46,11 @@ int pokeFullR;
 int pokeTouchR;
 int pokeTouchL;
 
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> 436475cb274d2a309731a367ff1beef70eba7c5a
 //objects
 Arduino ardu;
 
@@ -53,7 +58,10 @@ public void setup(){
   size(950, 410, JAVA2D);
   createGUI();
   customGUI();
+<<<<<<< HEAD
+=======
   appendTextToFile("log.txt","=======================================================");
+>>>>>>> 436475cb274d2a309731a367ff1beef70eba7c5a
   appendTextToFile("log.txt",day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second());
 }
 
