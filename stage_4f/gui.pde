@@ -36,7 +36,7 @@ public void setPort_click(GButton source, GEvent event) { //_CODE_:btn_setPort:3
 
 public void btn_20hz_click(GButton source, GEvent event) { //_CODE_:btn_20hz:652578:
   if(checkFields()){
-    vibrate(30,fld_time.getValueI());
+    vibrate(20,fld_time.getValueI());
   }
 } //_CODE_:btn_20hz:652578:
 

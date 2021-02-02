@@ -232,14 +232,14 @@ void stopExperiment(){
 void randomizeFreq()
 {
   if(int(random(2))==1){
-    freq=30;
+    freq=20;
   }else{
     freq=80;
   }
 }
 
 void vibrate20(){
-  vibrate(30,fld_time.getValueI());
+  vibrate(20,fld_time.getValueI());
 }
 
 void vibrate40(){
@@ -281,7 +281,7 @@ void startExperiment() {
       touchedPoke=false;
       addWindowInfo();
       randomizeFreq();
-      if(freq == 30){
+      if(freq == 20){
         thread("vibrate20");
       } else if(freq==80){
         thread("vibrate40");
@@ -314,7 +314,7 @@ void startExperiment() {
           pokeTime=millis()-timeStart;
           whichPoke="left";
           pokeTouchL++;
-          if (freq==30){
+          if (freq==20){
             feedIt=true;
             status="ok";
           }else if(freq==80){
@@ -329,7 +329,7 @@ void startExperiment() {
           if(freq==80){
             feedIt=true;
             status="ok";
-          }else if(freq==30){
+          }else if(freq==20){
             status="failed";
           }
         }else if((ardu.digitalRead(inSensor)==Arduino.HIGH)&&(millis()>=sensingInsideTime)){
