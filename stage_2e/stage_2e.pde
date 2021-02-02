@@ -101,13 +101,15 @@ int inSensor = 2;
 boolean runLoop;
 boolean runExperiment=false;
 boolean abortExperiment=false;
+boolean closedDoor = true;
 int sensingInsideTime;
 int port = 0;
 int timeFeed = 4;
 int cycleFeed = 1;
-int closeAngle = 47;
+int closeAngle = 27;
 int openAngle = 75;
-int doorDelay = 15;
+int deltaDoor= 20;
+int doorDelay = 100;
 int numOk = 0;
 int numFail = 0;
 int numIteration = 0;
@@ -116,7 +118,6 @@ int vibr_dur;
 int door_time;
 int timeStart;
 int timeStop;
-int door_angle;
 int waitForNextExperiment;
 int repeats;
 int pokeTime;
@@ -156,7 +157,7 @@ public void customGUI(){
  fld_inside_time.setText("500");
  fld_pump_pulse.setNumericType(G4P.INTEGER);
  fld_pump_pulse.setText(Integer.toString(timeFeed));
- 
+ btn_start.setVisible(false);
  btn_stop.setVisible(false);
 }
 >>>>>>> 2336c6798f5e3a9a51838b4bb1194e1460331b7d
