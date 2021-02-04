@@ -218,7 +218,7 @@ int[] makeList(){
       delay(int(random(0,30)));
       if((list[i]==80)&&(experimentsLeft>0)){
         if(int(random(0,2))==1){
-          list[i]=20;
+          list[i]=30;
           experimentsLeft--;
         }
       }
@@ -231,7 +231,7 @@ int[] makeList(){
 void randomizeFreq()
 {
   if(int(random(2))==1){
-    freq=20;
+    freq=30;
   }else{
     freq=80;
   }
@@ -302,7 +302,7 @@ void startExperiment() {
           pokeTime=millis()-timeStart;
           whichPoke="left";
           pokeTouchL++;
-          if (freq==20){
+          if (freq==30){
             feedIt=true;
             status="ok";
             waitForNextExperiment=fld_time_experiments.getValueI();
@@ -317,7 +317,7 @@ void startExperiment() {
           pokeTime=millis()-timeStart-door_time;
           whichPoke="right";
           pokeTouchR++;
-          if(freq==20){
+          if(freq==30){
             feedIt=true;
             status="ok";
             waitForNextExperiment=fld_time_experiments.getValueI();
