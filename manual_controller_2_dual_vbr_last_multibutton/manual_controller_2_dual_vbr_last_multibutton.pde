@@ -19,16 +19,19 @@ int pokeL = 8;
 int pokeR = 7;
 int door = 4;
 int inSensor = 2;
-int freqList[] = new int[]{20, //Freq1
-                              26, //Freq2
-                              32, //Freq3
-                              38, //Freq4
-                              44, //Freq5
-                              50, //Freq6
-                              56, //Freq7
-                              62, //Freq8
-                              68, //Freq9
-                              74, //Freq10
+
+//Frequency variables
+//If you need less, please fill others with 0
+int freqList[] =     new int[]{0, //Freq1
+                              20, //Freq2
+                              50, //Freq3
+                               0, //Freq4
+                               0, //Freq5
+                              25, //Freq6
+                              63, //Freq7
+                               0, //Freq8
+                               0, //Freq9
+                              32, //Freq10
                               80};//Freq11 
 
 boolean doorOpen;

@@ -34,19 +34,39 @@ void setArduino(){
   btn_fillL.setVisible(true);
   btnFeedR.setVisible(true);
   btnFillR.setVisible(true);
-  
+  if(freqList[0]>0){
   btn_1.setVisible(true);
+  }
+  if(freqList[1]>0){
   btn_2.setVisible(true);
+  }
+  if(freqList[2]>0){
   btn_3.setVisible(true);
+  }
+  if(freqList[3]>0){
   btn_4.setVisible(true);
+  }
+  if(freqList[4]>0){
   btn_5.setVisible(true);
+  }
+  if(freqList[5]>0){
   btn_6.setVisible(true);
+  }
+  if(freqList[6]>0){
   btn_7.setVisible(true);
+  }
+  if(freqList[7]>0){
   btn_8.setVisible(true);
+  }
+  if(freqList[8]>0){
   btn_9.setVisible(true);
+  }
+  if(freqList[9]>0){
   btn_10.setVisible(true);
+  }
+  if(freqList[10]>0){
   btn_11.setVisible(true);
-  
+  }
 }
 
 void appendTextToFile(String filename, String text) {
