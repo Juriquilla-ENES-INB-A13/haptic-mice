@@ -14,9 +14,9 @@
  * =========================================================
  */
 
-public void fill_click(GButton source, GEvent event) { //_CODE_:btn_fill:241519:
-  fill();
-} //_CODE_:btn_fill:241519:
+public void fill_l_click(GButton source, GEvent event) { //_CODE_:btn_fill_l:241519:
+  fillL();
+} //_CODE_:btn_fill_l:241519:
 
 public void start_click1(GButton source, GEvent event) { //_CODE_:btn_start:428180:
   if(checkFields()&& !runLoop){
@@ -36,13 +36,13 @@ public void setPort_click(GButton source, GEvent event) { //_CODE_:btn_setPort:3
 
 public void btn_20hz_click(GButton source, GEvent event) { //_CODE_:btn_20hz:652578:
   if(checkFields()){
-    vibrate(30,fld_time.getValueI());
+    vibrate(20,fld_time.getValueI());
   }
 } //_CODE_:btn_20hz:652578:
 
-public void feed_click(GButton source, GEvent event) { //_CODE_:btn_feed:628575:
-  feed();
-} //_CODE_:btn_feed:628575:
+public void feed_l_clik(GButton source, GEvent event) { //_CODE_:btn_feed_l:628575:
+  feedL();
+} //_CODE_:btn_feed_l:628575:
 
 public void stop_click(GButton source, GEvent event) { //_CODE_:btn_stop:242696:
   stopExperiment();
@@ -52,9 +52,17 @@ public void stop_click(GButton source, GEvent event) { //_CODE_:btn_stop:242696:
 
 public void btn_40hz_click(GButton source, GEvent event) { //_CODE_:btn_40hz:332202:
   if(checkFields()){
-    vibrate(80,fld_time.getValueI());
+    vibrate(40,fld_time.getValueI());
   }
 } //_CODE_:btn_40hz:332202:
+
+public void fill_r_click(GButton source, GEvent event) { //_CODE_:btn_fill_r:996716:
+  fillR();
+} //_CODE_:btn_fill_r:996716:
+
+public void feed_r_clik(GButton source, GEvent event) { //_CODE_:btn_feed_r:274769:
+  feedR();
+} //_CODE_:btn_feed_r:274769:
 
 
 
@@ -64,7 +72,7 @@ public void createGUI(){
   G4P.messagesEnabled(false);
   G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
   G4P.setMouseOverEnabled(false);
-  surface.setTitle("Haptic Mice - Stage 2f");
+  surface.setTitle("Haptic Mice 2 Pumps - Stage 2f");
   lbl_dur1 = new GLabel(this, 90, 60, 90, 20);
   lbl_dur1.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
   lbl_dur1.setText("duration {ms):");
@@ -99,10 +107,10 @@ public void createGUI(){
   fld_time_experiments.setOpaque(true);
   fld_name = new GTextField(this, 180, 300, 90, 20, G4P.SCROLLBARS_NONE);
   fld_name.setOpaque(true);
-  btn_fill = new GButton(this, 340, 220, 80, 30);
-  btn_fill.setText("Fill");
-  btn_fill.setLocalColorScheme(GCScheme.GOLD_SCHEME);
-  btn_fill.addEventHandler(this, "fill_click");
+  btn_fill_l = new GButton(this, 340, 210, 80, 30);
+  btn_fill_l.setText("Fill Left");
+  btn_fill_l.setLocalColorScheme(GCScheme.GOLD_SCHEME);
+  btn_fill_l.addEventHandler(this, "fill_l_click");
   btn_start = new GButton(this, 40, 360, 80, 30);
   btn_start.setText("Start");
   btn_start.setLocalColorScheme(GCScheme.GREEN_SCHEME);
@@ -124,19 +132,19 @@ public void createGUI(){
   lbl_connected = new GLabel(this, 410, 20, 160, 20);
   lbl_connected.setText("disconnected");
   lbl_connected.setOpaque(false);
-  btn_20hz = new GButton(this, 480, 290, 80, 30);
+  btn_20hz = new GButton(this, 480, 310, 80, 30);
   btn_20hz.setText("20Hz");
   btn_20hz.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
   btn_20hz.addEventHandler(this, "btn_20hz_click");
-  btn_feed = new GButton(this, 480, 220, 80, 30);
-  btn_feed.setText("Feed");
-  btn_feed.setLocalColorScheme(GCScheme.GOLD_SCHEME);
-  btn_feed.addEventHandler(this, "feed_click");
+  btn_feed_l = new GButton(this, 340, 260, 80, 30);
+  btn_feed_l.setText("Feed Left");
+  btn_feed_l.setLocalColorScheme(GCScheme.GOLD_SCHEME);
+  btn_feed_l.addEventHandler(this, "feed_l_clik");
   btn_stop = new GButton(this, 180, 360, 80, 30);
   btn_stop.setText("stop!");
   btn_stop.setLocalColorScheme(GCScheme.RED_SCHEME);
   btn_stop.addEventHandler(this, "stop_click");
-  btn_40hz = new GButton(this, 340, 290, 80, 30);
+  btn_40hz = new GButton(this, 340, 310, 80, 30);
   btn_40hz.setText("40Hz");
   btn_40hz.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
   btn_40hz.addEventHandler(this, "btn_40hz_click");
@@ -171,6 +179,14 @@ public void createGUI(){
   lblProportionLeft.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   lblProportionLeft.setText("Left proportion %:");
   lblProportionLeft.setOpaque(false);
+  btn_fill_r = new GButton(this, 480, 210, 80, 30);
+  btn_fill_r.setText("Fill Right");
+  btn_fill_r.setLocalColorScheme(GCScheme.GOLD_SCHEME);
+  btn_fill_r.addEventHandler(this, "fill_r_click");
+  btn_feed_r = new GButton(this, 480, 260, 80, 30);
+  btn_feed_r.setText("Feed Right");
+  btn_feed_r.setLocalColorScheme(GCScheme.GOLD_SCHEME);
+  btn_feed_r.addEventHandler(this, "feed_r_clik");
 }
 
 // Variable declarations 
@@ -186,7 +202,7 @@ GTextField fld_door_time;
 GTextField fld_repeats; 
 GTextField fld_time_experiments; 
 GTextField fld_name; 
-GButton btn_fill; 
+GButton btn_fill_l; 
 GButton btn_start; 
 GButton btn_open; 
 GTextField fld_response_time; 
@@ -195,7 +211,7 @@ GLabel lbl_port;
 GButton btn_setPort; 
 GLabel lbl_connected; 
 GButton btn_20hz; 
-GButton btn_feed; 
+GButton btn_feed_l; 
 GButton btn_stop; 
 GButton btn_40hz; 
 GLabel lbl_inside_time; 
@@ -207,3 +223,5 @@ GTextField fldFailDoorTime;
 GTextArea taLog; 
 GCustomSlider sldProportion; 
 GLabel lblProportionLeft; 
+GButton btn_fill_r; 
+GButton btn_feed_r; 

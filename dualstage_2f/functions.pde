@@ -3,12 +3,13 @@
 void setArduino(){
   if(ardu != null){
     ardu.dispose();
-    println("INFO:arduino disconnected!");
+    printInfo("INFO:arduino disconnected!");
   }
-  println("INFO:connecting to port:"+Arduino.list()[lst_port.getSelectedIndex()]);
+  printInfo("INFO:connecting to port:"+Arduino.list()[lst_port.getSelectedIndex()]);
   ardu = new Arduino(this, Arduino.list()[lst_port.getSelectedIndex()], 57600);
   ardu.pinMode(vibr, Arduino.OUTPUT);
-  ardu.pinMode(pump, Arduino.OUTPUT);
+  ardu.pinMode(pumpR, Arduino.OUTPUT);
+  ardu.pinMode(pumpL, Arduino.OUTPUT);
   ardu.pinMode(pokeL, Arduino.INPUT);
   ardu.pinMode(pokeR, Arduino.INPUT);
   ardu.pinMode(door, Arduino.SERVO);
@@ -24,7 +25,7 @@ void setArduino(){
   ardu.digitalWrite(10,Arduino.HIGH);
   delay(100);
   ardu.digitalWrite(10,Arduino.LOW);
-  println("INFO:success!");
+  printInfo("INFO:success!");
   lbl_connected.setText("connected!");
 }
 
@@ -54,25 +55,51 @@ void createFile(File f) {
   }
 }
 
-
-//Motor functions
-void fill()
-{
-  println("RUN:Filling!");
-  ardu.digitalWrite(pump, Arduino.HIGH);
-  delay(3000);
-  ardu.digitalWrite(pump, Arduino.LOW);
-  println("RUN:Done!");
+void printInfo(String textLog){
+  println(textLog); //<>// //<>//
 }
 
-void feed()
+
+//Motor functions
+void fillL()
 {
-  println("RUN: feed");
+  printInfo("RUN:Filling!");
+  ardu.digitalWrite(pumpL, Arduino.HIGH);
+  delay(3000);
+  ardu.digitalWrite(pumpL, Arduino.LOW);
+  printInfo("RUN:Filling done!");
+
+}
+
+void fillR()
+{
+  printInfo("RUN:Filling!");
+  ardu.digitalWrite(pumpR, Arduino.HIGH);
+  delay(3000);
+  ardu.digitalWrite(pumpR, Arduino.LOW);
+  printInfo("RUN:Filling done!");
+
+}
+
+void feedL()
+{
+  printInfo("RUN: feed");
   int cycles=cycleFeed;
   while(cycles>=0){
-    ardu.digitalWrite(pump, Arduino.HIGH);
+    ardu.digitalWrite(pumpL, Arduino.HIGH);
     delay(fld_pump_pulse.getValueI());
-    ardu.digitalWrite(pump, Arduino.LOW);
+    ardu.digitalWrite(pumpL, Arduino.LOW);
+    delay(10);
+    cycles--;
+  }
+}
+void feedR(){
+  printInfo("RUN: feed");
+  int cycles=cycleFeed;
+  while(cycles>=0){
+    ardu.digitalWrite(pumpR, Arduino.HIGH);
+    delay(fld_pump_pulse.getValueI());
+    ardu.digitalWrite(pumpR, Arduino.LOW);
     delay(10);
     cycles--;
   }
@@ -80,7 +107,7 @@ void feed()
 
 void vibrate(int ifreq, int iduration)
 {
-  println("RUN:freq "+ifreq+",dur "+iduration);
+  printInfo("RUN:freq "+ifreq+",dur "+iduration);
   if (ifreq > 0)
   {
     int off_time, cycles;
@@ -99,7 +126,7 @@ void vibrate(int ifreq, int iduration)
 }
 
 void openDataFolder() {
-  println("Opening folder:"+dataPath(""));
+  printInfo("INFO:Opening folder:"+dataPath(""));
   if (System.getProperty("os.name").toLowerCase().contains("windows")) {
     launch("explorer.exe"+" "+dataPath(""));
   } else {
@@ -136,7 +163,7 @@ void openDoor(){
 }
 
 void addWindowInfo(){
-  surface.setTitle("Stage 2 "+day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second()+ "  Iteration:"+numIteration+ " OK:"+numOk+" Fail:"+numFail+" freq:"+freq);
+  surface.setTitle("Stage 2f dual pumps "+day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second()+ "  Iteration:"+numIteration+ " OK:"+numOk+" Fail:"+numFail+" freq:"+freq);
 }
 
 
@@ -151,16 +178,16 @@ boolean checkFields() {
   (fld_name.getText() != "")) {
     return true;
   } else {
-    println("ERROR: No empty fields allowed! ");
+    printInfo("ERROR: No empty fields allowed! ");
     return false;
   }
 }
 
 void writeParamsToFile(String flname)
 {
-  println("FILE: "+flname);
+  printInfo("FILE: "+flname);
   String datetime = new String(day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second());
-  println(datetime);
+  printInfo(datetime);
   String params = new String(
     "time:"+ fld_time.getValueI() +
     " open_door:"+ fld_door_time.getValueI()+
@@ -169,7 +196,7 @@ void writeParamsToFile(String flname)
     " repeats:"+fld_repeats.getValueI() +
     " exp_time:"+fld_time_experiments.getValueI()
   );
-  println(params);
+  printInfo(params);
   appendTextToFile(flname, "started: "+datetime);
   appendTextToFile(flname, params);
 }
@@ -178,6 +205,30 @@ void stopExperiment(){
   runLoop=false;
   runExperiment=false;
   abortExperiment=true;
+}
+
+
+int[] makeList(){
+  int totalNum = fld_repeats.getValueI();
+  int experimentsLeft=(int(fld_repeats.getValueI()*(sldProportion.getValueF()/100)));
+  int countChanged = 0;
+  int[] list = new int[totalNum];
+  for(int i=0;i<list.length;i++){
+    list[i]=40;
+  }
+  while(experimentsLeft>0){
+    for(int i=0;i<list.length;i++){
+      delay(int(random(0,30)));
+      if((list[i]==40)&&(experimentsLeft>0)){
+        if(int(random(0,2))==1){
+          list[i]=20;
+          experimentsLeft--;
+        }
+      }
+    }
+  }
+  println(list);
+  return list;
 }
 
 void randomizeFreq()
@@ -189,13 +240,15 @@ void randomizeFreq()
   }
 }
 
-void startExperiment() {
+
+void startExperiment() { //<>//
+  int[] frequencies = makeList();
   runExperiment=true;
   filename = fld_name.getText()+".txt";
   vibr_dur = fld_time.getValueI();
   waitForNextExperiment=fld_time_experiments.getValueI();
   repeats = fld_repeats.getValueI();
-  numIteration=1;
+  numIteration=0;
   numOk=0;
   numFail=0;
   pokeFullL=0;
@@ -206,9 +259,9 @@ void startExperiment() {
   writeParamsToFile(filename);
   writeSeparator(filename);
   writeTableHeader(filename);  
-    while((numIteration<=repeats)&&runExperiment){
+    for(;numIteration<frequencies.length;numIteration++){
       if(!runExperiment){
-        println("RUN:Stopping!");
+        printInfo("RUN:Stopping!");
         writeSeparator(filename);
         appendTextToFile(filename,"aborted:"+day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second());
         writeSeparator(filename);
@@ -222,7 +275,7 @@ void startExperiment() {
       feedIt=false;
       touchedPoke=false;
       addWindowInfo();
-      randomizeFreq();
+      freq=frequencies[numIteration];
       vibrate(freq,vibr_dur);
       addWindowInfo();
       timeStart=millis();
@@ -233,12 +286,9 @@ void startExperiment() {
       if(fld_door_time.getValueI()>=0){
         delay(fld_door_time.getValueI());
       }
-      sensingInsideTime=millis()+fld_inside_time.getValueI();
-      delay(door_time);
       openDoor();
       runLoop=true;
-      println("RUN:iter:"+numIteration+",freq:"+freq);
-
+      printInfo("RUN:iter:"+numIteration+",freq:"+freq);
       while(runLoop){
         if(millis() >= timeStop){
           numFail++;
@@ -247,16 +297,16 @@ void startExperiment() {
           runLoop=false;
           insideTime=(millis()-timeStart-door_time);
           status="timed_out";
-          println("RUN: timed out!");
+          printInfo("RUN: timed out!");
           waitForNextExperiment=fldFailDoorTime.getValueI();
         } else if((ardu.digitalRead(pokeL)==Arduino.HIGH)&&(touchedPoke == false)){
-          println("RUN: left poke!");
+          printInfo("RUN: left poke!");
           touchedPoke=true;
           pokeTime=millis()-timeStart;
           whichPoke="left";
           pokeTouchL++;
           if (freq==20){
-            feedIt=true;
+            feedL();
             status="ok";
             waitForNextExperiment=fld_time_experiments.getValueI();
           }else if(freq==40){
@@ -265,13 +315,13 @@ void startExperiment() {
             waitForNextExperiment=fldFailDoorTime.getValueI();
           }
         } else if((ardu.digitalRead(pokeR)==Arduino.HIGH)&&(touchedPoke == false)){
-          println("RUN: right poke!");
+          printInfo("RUN: right poke!");
           touchedPoke=true;
           pokeTime=millis()-timeStart-door_time;
           whichPoke="right";
           pokeTouchR++;
           if(freq==40){
-            feedIt=true;
+            feedR();
             status="ok";
             waitForNextExperiment=fld_time_experiments.getValueI();
           }else if(freq==20){
@@ -279,30 +329,14 @@ void startExperiment() {
             timeStop+=fldFailDoorTime.getValueI();
             waitForNextExperiment=fldFailDoorTime.getValueI();
           }
-        }else if((ardu.digitalRead(inSensor)==Arduino.HIGH)&&(millis()>=sensingInsideTime)){
-          insideTime=millis()-timeStart-door_time;
-          println("RUN: in!");
-          if(feedIt){
-            if(whichPoke=="right"){
-              pokeFullR++;
-            } else if(whichPoke=="left"){
-              pokeFullL++;
-            }
-            numOk++;
-            feed();  
-          }else{
-            numFail++;
-          }
-          closeDoor();
-          runLoop=false;
         }
         delay(10);
       }
       addWindowInfo();
       appendTextToFile(filename,numIteration+","+freq+","+pokeTime+","+whichPoke+","+insideTime+","+status);
-      println("Waiting:"+waitForNextExperiment);
+      printInfo("Waiting:"+waitForNextExperiment);
       delay(waitForNextExperiment);
-      numIteration++;
+      
     }
     if(abortExperiment){
       appendTextToFile(filename,"ABORTED!!");
@@ -316,5 +350,5 @@ void startExperiment() {
     writeSeparator(filename);
     btn_start.setVisible(true);
     btn_stop.setVisible(false);
-    println("RUN: end of experiment");
+    printInfo("RUN: end of experiment");
 }

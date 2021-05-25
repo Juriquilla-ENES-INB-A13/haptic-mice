@@ -1,6 +1,7 @@
 import g4p_controls.*;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.util.Arrays;
 import java.lang.*;
 import cc.arduino.*;
 import org.firmata.*;
@@ -9,7 +10,8 @@ import processing.serial.*;
 //connections
 
 int vibr = 3;
-int pump = 5;
+int pumpL = 5;
+int pumpR = 6;
 int pokeL = 8;
 int pokeR = 7;
 int door = 4;
@@ -45,20 +47,20 @@ int pokeFullR;
 int pokeTouchR;
 int pokeTouchL;
 
-
-
 //objects
 Arduino ardu;
 
 public void setup(){
-  size(630, 410, JAVA2D);
-  println(Arduino.list());
+  size(950, 410, JAVA2D);
   createGUI();
   customGUI();
+  appendTextToFile("log.txt","=======================================================");
+  appendTextToFile("log.txt",day()+"-"+month()+"-"+year()+" "+hour()+":"+minute()+":"+second());
 }
 
 public void draw(){
   background(230);
+  
 }
 
 // Use this method to add additional statements
@@ -74,5 +76,15 @@ public void customGUI(){
  fld_pump_pulse.setNumericType(G4P.INTEGER);
  fld_pump_pulse.setText(Integer.toString(timeFeed));
  fldFailDoorTime.setNumericType(G4P.INTEGER);
+ fld_time.setText("2000");
+ fld_door_time.setText("200");
+ fld_response_time.setText("3000");
+ fld_repeats.setText("20");
+ 
+ fld_time_experiments.setText("2000");
+ 
+ 
+ 
+ sldProportion.setValue(80);
  btn_stop.setVisible(false);
 }
